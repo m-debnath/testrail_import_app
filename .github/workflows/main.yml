@@ -23,6 +23,7 @@ jobs:
         source: "."
         target: "/oradiskvdb1/app/testrail_import_app"
   build:
+    needs: deploy
     name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
