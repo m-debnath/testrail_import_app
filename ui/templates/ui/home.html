@@ -1,0 +1,9 @@
+{% extends "ui/base.html" %}
+{% load humanize %}
+{% block content %}
+    <div id="main">
+        <script>let sessionData = {{ session_data|safe }}</script>
+        <div id="app">
+        </div>
+    </div>
+{% endblock content %}

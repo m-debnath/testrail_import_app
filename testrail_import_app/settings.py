@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'ui',
+    'api',
+    'crispy_forms',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
