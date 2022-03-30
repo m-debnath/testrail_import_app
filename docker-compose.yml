@@ -19,6 +19,6 @@ services:
         restart: always
         environment:
             MYSQL_DATABASE: testrail_import_db
-            MYSQL_ROOT_PASSWORD: Te5trailPa##w0rd
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         volumes:
             - .dbdata:/var/lib/mysql
