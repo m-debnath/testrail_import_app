@@ -4,8 +4,8 @@ import { Form } from "react-bootstrap";
 
 const BASE_URL = `${location.origin}/api`;
 
-const FormSuiteSelect = (props) => {
-    const { project, suite, setSuite } = props;
+const FormSectionSelect = (props) => {
+    const { project, suite, section, setSection } = props;
 
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
@@ -13,12 +13,16 @@ const FormSuiteSelect = (props) => {
     const [items, setItems] = React.useState([]);
 
     useEffect(() => {
+        setSection("Select top section");
+        setLoading(true);
+    }, [project]);
+
+    useEffect(() => {
         let unmounted = false;
-        async function getSuites() {
-            let suites_url = `${BASE_URL}/get_suites/${project}`;
-            setSuite("Select suite");
+        async function getSections() {
+            let sections_url = `${BASE_URL}/get_sections/${project}&suite_id=${suite}`;
             setLoading(true);
-            const response = await axios.get(suites_url, {
+            const response = await axios.get(sections_url, {
                 auth: {
                     username: username,
                     password: password
@@ -27,30 +31,30 @@ const FormSuiteSelect = (props) => {
             const body = await response.data;
             if (!unmounted) {
                 setItems(
-                    body.map(( suite ) => ({ label: suite.name, value: suite.id }))
+                    body.map(( section ) => ({ label: section.name, value: section.id }))
                 );
                 setLoading(false);
             }
         }
-        if (project !== "Select project") {
-            getSuites();
+        if (project !== "Select project" && suite !== "Select suite") {
+            getSections();
         }
         return () => {
             unmounted = true;
         };
-    }, [project]);
+    }, [suite]);
 
     return (
         <Form.Select 
-            aria-label="Select suite" 
+            aria-label="Select top section" 
             className="w-100" 
-            id="formSuiteSelect"
+            id="formSectionSelect"
             disabled={loading}
-            value={suite}
-            onChange={(e) => setSuite(e.currentTarget.value)}
+            value={section}
+            onChange={(e) => setSection(e.currentTarget.value)}
         >
-            <option key="Select suite" value="Select suite">
-                Select suite
+            <option key="Select top section" value="Select top section">
+                Select top section
             </option>
             {items.map(({ label, value }) => (
             <option key={value} value={value}>
@@ -61,4 +65,4 @@ const FormSuiteSelect = (props) => {
     );
 }
 
-export default FormSuiteSelect;
+export default FormSectionSelect;
