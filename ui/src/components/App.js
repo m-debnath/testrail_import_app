@@ -15,11 +15,13 @@ const App = (props) => {
     const [project, setProject] = useState("Select project");
     const [suite, setSuite] = useState("Select suite");
     const [section, setSection] = useState("Select top section");
+    const [apploading, setAppLoading] = useState(false);
 
     useEffect(() => {
         console.log(project);
         console.log(suite);
         console.log(section);
+        console.log(apploading);
     });
 
     return (
@@ -32,6 +34,7 @@ const App = (props) => {
                             <FormProjectSelect 
                                 project={project}
                                 setProject={setProject}
+                                setAppLoading={setAppLoading}
                             />
                         </Form.Group>
                         <Form.Group className="mb-4" controlId="formSuite">
@@ -39,6 +42,7 @@ const App = (props) => {
                                 project={project}
                                 suite={suite}
                                 setSuite={setSuite}
+                                setAppLoading={setAppLoading}
                             />
                         </Form.Group>
                 </Card.Body>
@@ -53,6 +57,7 @@ const App = (props) => {
                                 suite={suite}
                                 section={section}
                                 setSection={setSection}
+                                setAppLoading={setAppLoading}
                             />
                         </Form.Group>
                 </Card.Body>

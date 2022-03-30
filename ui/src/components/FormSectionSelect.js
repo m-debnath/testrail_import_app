@@ -5,7 +5,7 @@ import { Form } from "react-bootstrap";
 const BASE_URL = `${location.origin}/api`;
 
 const FormSectionSelect = (props) => {
-    const { project, suite, section, setSection } = props;
+    const { project, suite, section, setSection, setAppLoading } = props;
 
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
@@ -22,6 +22,7 @@ const FormSectionSelect = (props) => {
         async function getSections() {
             let sections_url = `${BASE_URL}/get_sections/${project}&suite_id=${suite}`;
             setLoading(true);
+            setAppLoading(true);
             const response = await axios.get(sections_url, {
                 auth: {
                     username: username,
@@ -34,6 +35,7 @@ const FormSectionSelect = (props) => {
                     body.map(( section ) => ({ label: section.name, value: section.id }))
                 );
                 setLoading(false);
+                setAppLoading(false);
             }
         }
         if (project !== "Select project" && suite !== "Select suite") {

@@ -5,7 +5,7 @@ import { Form } from "react-bootstrap";
 const BASE_URL = `${location.origin}/api`;
 
 const FormProjectSelect = (props) => {
-    const { project, setProject } = props;
+    const { project, setProject, setAppLoading } = props;
 
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
@@ -16,6 +16,7 @@ const FormProjectSelect = (props) => {
         let unmounted = false;
         async function getProjects() {
             let projects_url = `${BASE_URL}/get_projects`;
+            setAppLoading(true);
             const response = await axios.get(projects_url, {
                 auth: {
                     username: username,
@@ -28,6 +29,7 @@ const FormProjectSelect = (props) => {
                     body.map(( project ) => ({ label: project.name, value: project.id }))
                 );
                 setLoading(false);
+                setAppLoading(false);
             }
         }
         getProjects();

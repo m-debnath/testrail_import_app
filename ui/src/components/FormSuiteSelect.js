@@ -5,7 +5,7 @@ import { Form } from "react-bootstrap";
 const BASE_URL = `${location.origin}/api`;
 
 const FormSuiteSelect = (props) => {
-    const { project, suite, setSuite } = props;
+    const { project, suite, setSuite, setAppLoading } = props;
 
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
@@ -18,6 +18,7 @@ const FormSuiteSelect = (props) => {
             let suites_url = `${BASE_URL}/get_suites/${project}`;
             setSuite("Select suite");
             setLoading(true);
+            setAppLoading(true);
             const response = await axios.get(suites_url, {
                 auth: {
                     username: username,
@@ -30,6 +31,7 @@ const FormSuiteSelect = (props) => {
                     body.map(( suite ) => ({ label: suite.name, value: suite.id }))
                 );
                 setLoading(false);
+                setAppLoading(false);
             }
         }
         if (project !== "Select project") {
