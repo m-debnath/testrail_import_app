@@ -4,6 +4,7 @@ import axios from "axios";
 import { Card } from 'react-bootstrap';
 import { Form } from "react-bootstrap";
 import FormProjectSelect from './FormProjectSelect';
+import FormSuiteSelect from "./FormSuiteSelect";
 
 const BASE_URL = `${location.origin}/api`;
 
@@ -11,9 +12,11 @@ const App = (props) => {
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
     const [project, setProject] = useState("Select project");
+    const [suite, setSuite] = useState("Select suite");
 
     useEffect(() => {
         console.log(project);
+        console.log(suite);
     });
 
     return (
@@ -28,13 +31,12 @@ const App = (props) => {
                                 setProject={setProject}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-4" controlId="formSuite" id="formSuiteSelect">
-                            <Form.Select aria-label="Select suite">
-                                <option>Select test suite</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Select>
+                        <Form.Group className="mb-4" controlId="formSuite">
+                            <FormSuiteSelect 
+                                project={project}
+                                suite={suite}
+                                setSuite={setSuite}
+                            />
                         </Form.Group>
                 </Card.Body>
                 </Card>

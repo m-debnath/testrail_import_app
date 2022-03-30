@@ -4,8 +4,8 @@ import { Form } from "react-bootstrap";
 
 const BASE_URL = `${location.origin}/api`;
 
-const FormProjectSelect = (props) => {
-    const { project, setProject } = props;
+const FormSuiteSelect = (props) => {
+    const { project, suite, setSuite } = props;
 
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
@@ -14,9 +14,10 @@ const FormProjectSelect = (props) => {
 
     useEffect(() => {
         let unmounted = false;
-        async function getProjects() {
-            let projects_url = `${BASE_URL}/get_projects`;
-            const response = await axios.get(projects_url, {
+        async function getSuites() {
+            let suites_url = `${BASE_URL}/get_suites/${project}`;
+            console.log(suites_url);
+            const response = await axios.get(suites_url, {
                 auth: {
                     username: username,
                     password: password
@@ -25,29 +26,30 @@ const FormProjectSelect = (props) => {
             const body = await response.data;
             if (!unmounted) {
                 setItems(
-                    body.map(( project ) => ({ label: project.name, value: project.id }))
+                    body.map(( suite ) => ({ label: suite.name, value: suite.id }))
                 );
                 setLoading(false);
             }
         }
-        getProjects();
+        if (project !== "Select project") {
+            getSuites();
+        }
         return () => {
             unmounted = true;
         };
-    }, []);
+    }, [project]);
 
     return (
         <Form.Select 
-            aria-label="Select project" 
+            aria-label="Select suite" 
             className="w-100" 
-            autoFocus 
-            id="formProjectSelect"
+            id="formSuiteSelect"
             disabled={loading}
-            value={project}
-            onChange={(e) => setProject(e.currentTarget.value)}
+            value={suite}
+            onChange={(e) => setSuite(e.currentTarget.value)}
         >
-            <option key="Select project" value="Select project">
-                Select project
+            <option key="Select suite" value="Select suite">
+                Select suite
             </option>
             {items.map(({ label, value }) => (
             <option key={value} value={value}>
@@ -58,4 +60,4 @@ const FormProjectSelect = (props) => {
     );
 }
 
-export default FormProjectSelect;
+export default FormSuiteSelect;
