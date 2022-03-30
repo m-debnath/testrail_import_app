@@ -26,7 +26,6 @@ const App = (props) => {
                 projects.push(...resp.data.projects);
                 console.log(resp.data._links.next);
                 if (resp.data._links.next) {
-                    console.log('more links');
                     next_url = resp.data._links.next.replace('"next": "/api/v2', '"next": "');
                     projects_url = `${BASE_URL}${next_url}`;
                 } else {
