@@ -39,7 +39,34 @@ def get_projects(request):
         )
         return django_response
 
-def get_suites(request, num=None):
+def get_suites(request, project_id=None):
+    global TESRAIL_BASE_URL
+
+    if request.method == 'GET':
+        request_url = f'{TESRAIL_BASE_URL}{request.path.replace("/api", "")}'
+        suites = []
+        request_headers = {}
+        for header in request.headers:
+            if header in ['Authorization', 'Accept', 'Accept-Encoding']:
+                request_headers[header] = request.headers[header]
+        response = requests.get(request_url, params=request.GET, headers=request_headers)
+        if response.status_code == 200:
+            response_obj = json.loads(response.text)
+            suites.extend(response_obj)
+            django_response = HttpResponse(
+                content=json.dumps(suites),
+                status=response.status_code,
+                content_type=response.headers['Content-Type']
+            )
+        else:
+            django_response = HttpResponse(
+                content=response.content,
+                status=response.status_code,
+                content_type=response.headers['Content-Type']
+            )
+        return django_response
+
+def get_sections(request, project_id=None):
     global TESRAIL_BASE_URL
 
     if request.method == 'GET':
