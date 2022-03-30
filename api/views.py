@@ -5,7 +5,6 @@ import json
 
 TESRAIL_BASE_URL = 'https://tele2se.testrail.net/index.php?/api/v2'
 
-# Create your views here.
 def get_projects(request):
     global TESRAIL_BASE_URL
 
@@ -38,4 +37,31 @@ def get_projects(request):
             status=response.status_code,
             content_type=response.headers['Content-Type']
         )
+        return django_response
+
+def get_suites(request, num=None):
+    global TESRAIL_BASE_URL
+
+    if request.method == 'GET':
+        request_url = f'{TESRAIL_BASE_URL}{request.path.replace("/api", "")}'
+        suites = []
+        request_headers = {}
+        for header in request.headers:
+            if header in ['Authorization', 'Accept', 'Accept-Encoding']:
+                request_headers[header] = request.headers[header]
+        response = requests.get(request_url, params=request.GET, headers=request_headers)
+        if response.status_code == 200:
+            response_obj = json.loads(response.text)
+            suites.extend(response_obj)
+            django_response = HttpResponse(
+                content=json.dumps(suites),
+                status=response.status_code,
+                content_type=response.headers['Content-Type']
+            )
+        else:
+            django_response = HttpResponse(
+                content=response.content,
+                status=response.status_code,
+                content_type=response.headers['Content-Type']
+            )
         return django_response
