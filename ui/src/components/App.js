@@ -14,6 +14,7 @@ const App = (props) => {
 
     useEffect(() => {
         console.log(project);
+        console.log(project);
     });
 
     return (
