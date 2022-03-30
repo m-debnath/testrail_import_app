@@ -98,3 +98,16 @@ a.article-title:hover {
   border-color: #212529;
   box-shadow: 0 0 0 0.2rem rgba(39, 39, 39, 0.25);
 }
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: transparent;
+  background-clip: padding-box;
+  border: transparent;
+  border-radius: 0.3rem;
+  outline: 0;
+}

@@ -3,6 +3,9 @@ import { render } from "react-dom";
 import axios from "axios";
 import { Card } from 'react-bootstrap';
 import { Form } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import FormProjectSelect from './FormProjectSelect';
 import FormSuiteSelect from "./FormSuiteSelect";
 import FormSectionSelect from "./FormSectionSelect";
@@ -63,6 +66,26 @@ const App = (props) => {
                 </Card.Body>
                 </Card>
             </Form>
+            <Modal 
+                show={apploading} 
+                backdrop="static" 
+                keyboard={false} 
+                animation={false}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Body>
+                    <Container fluid>
+                            <Row>
+                                <Col className="text-center align-middle">
+                                    <Spinner animation="border" role="status">
+                                    </Spinner>
+                                </Col>
+                            </Row>
+                        </Container>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 }
