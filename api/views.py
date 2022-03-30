@@ -66,29 +66,36 @@ def get_suites(request, project_id=None):
             )
         return django_response
 
-def get_sections(request, project_id=None):
+def get_sections(request, project_id=None, suite_id=None):
     global TESRAIL_BASE_URL
 
     if request.method == 'GET':
         request_url = f'{TESRAIL_BASE_URL}{request.path.replace("/api", "")}'
-        suites = []
+        sections = []
         request_headers = {}
         for header in request.headers:
             if header in ['Authorization', 'Accept', 'Accept-Encoding']:
                 request_headers[header] = request.headers[header]
-        response = requests.get(request_url, params=request.GET, headers=request_headers)
-        if response.status_code == 200:
-            response_obj = json.loads(response.text)
-            suites.extend(response_obj)
-            django_response = HttpResponse(
-                content=json.dumps(suites),
-                status=response.status_code,
-                content_type=response.headers['Content-Type']
-            )
-        else:
-            django_response = HttpResponse(
-                content=response.content,
-                status=response.status_code,
-                content_type=response.headers['Content-Type']
-            )
+        while True:
+            response = requests.get(request_url, params=request.GET, headers=request_headers)
+            if response.status_code == 200:
+                response_obj = json.loads(response.text)
+                sections.extend([section for section in response_obj['sections'] if section['depth'] == 0])
+                if not response_obj['_links']['next']:
+                    break
+                else:
+                    next_url = response_obj['_links']['next']
+                    request_url = f'{TESRAIL_BASE_URL}{next_url.replace("/api/v2", "")}'
+            else:
+                django_response = HttpResponse(
+                    content=response.content,
+                    status=response.status_code,
+                    content_type=response.headers['Content-Type']
+                )
+                return django_response
+        django_response = HttpResponse(
+            content=json.dumps(sections),
+            status=response.status_code,
+            content_type=response.headers['Content-Type']
+        )
         return django_response
