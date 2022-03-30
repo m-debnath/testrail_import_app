@@ -5,6 +5,6 @@ $(function () {
     $('button').removeClass("btn-outline-info").addClass("btn-dark mt-3");
     setTimeout(fade_out, 2000);
     function fade_out() {
-        $(".alert").fadeOut(2000);
+        $(".alert").fadeOut(800);
     }
 });
