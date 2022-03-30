@@ -12,7 +12,7 @@ ul {
   margin: 0;
 }
 
-.bg-jira {
+.bg-nav {
   background-color: #203652;
 }
 
@@ -87,4 +87,14 @@ a.article-title:hover {
   color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb;
+}
+
+.form-control:focus {
+  border-color: #212529;
+  box-shadow: 0 0 0 0.2rem rgba(39, 39, 39, 0.25);
+}
+
+.form-select:focus {
+  border-color: #212529;
+  box-shadow: 0 0 0 0.2rem rgba(39, 39, 39, 0.25);
 }
