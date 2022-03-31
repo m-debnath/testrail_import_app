@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 
 const FormDetailFileInput = (props) => {
-    const { idFileName, setDetailFileName, setAppLoading } = props;
+    const { section, idFileName, setDetailFileName, setAppLoading } = props;
 
     return (
         <>
@@ -11,8 +11,8 @@ const FormDetailFileInput = (props) => {
                 id="formIdFileInput"
                 type="file"
                 accept=".xlsx"
-                disabled={idFileName===""}
-                onChange={(e) => setDetailFileName(e.target.files[0].name)}
+                disabled={section==="Select top section" || idFileName===""}
+                onChange={(e) => setDetailFileName(e.target.files[0] ? e.target.files[0].name: "")}
             />
         </>
     );

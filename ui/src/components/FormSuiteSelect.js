@@ -39,6 +39,9 @@ const FormSuiteSelect = (props) => {
                 console.log(error);
                 setAppLoading(false);
             });
+        } else {
+            setItems([]);
+            setSuite("Select suite");
         }
         return () => {
             unmounted = true;
@@ -50,7 +53,7 @@ const FormSuiteSelect = (props) => {
             aria-label="Select suite" 
             className="w-100" 
             id="formSuiteSelect"
-            disabled={loading}
+            disabled={loading || project=="Select project"}
             value={suite}
             onChange={(e) => setSuite(e.currentTarget.value)}
         >

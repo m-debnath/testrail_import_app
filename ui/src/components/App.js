@@ -13,6 +13,8 @@ import FormSectionSelect from "./FormSectionSelect";
 import FormIdFileInput from "./FormIdFileInput";
 import FormDetailFileInput from "./FormDetailFileInput";
 import FormAttachmentFileInput from "./FormAttachmentFileInput";
+import FormRetrySwitch from "./FormRetrySwitch";
+import FormUploadButton from "./FormUploadButton";
 
 const BASE_URL = `${location.origin}/api`;
 
@@ -53,6 +55,7 @@ const App = (props) => {
     const [idFileName, setIdFileName] = useState("");
     const [detailFileName, setDetailFileName] = useState("");
     const [attachmentFileName, setAttachmentFileName] = useState("");
+    const [retrySwitch, setRetrySwitch] = useState(false);
     const [apploading, setAppLoading] = useState(false);
     
 
@@ -63,6 +66,7 @@ const App = (props) => {
         console.log(idFileName);
         console.log(detailFileName);
         console.log(attachmentFileName);
+        console.log(retrySwitch);
         console.log(apploading);
     });
 
@@ -71,7 +75,7 @@ const App = (props) => {
             <Form>
                 <Card>
                 <Card.Body>
-                        <legend className="border-bottom mb-4">Please select Testrail project, test suite and top section.&nbsp;
+                        <legend className="border-bottom mb-4 legend">Please select Testrail project, test suite and top section.&nbsp;
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide: 400 }}
@@ -104,11 +108,7 @@ const App = (props) => {
                                 setAppLoading={setAppLoading}
                             />
                         </Form.Group>
-                </Card.Body>
-                </Card>
-                <Card className="mt-2">
-                <Card.Body>
-                        <legend className="border-bottom mb-4">Please upload the spreadsheets and attachments exported from HP ALM.&nbsp;
+                        <legend className="border-bottom mb-4 legend">Please upload the spreadsheets and attachments exported from HP ALM.&nbsp;
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide: 400 }}
@@ -120,12 +120,14 @@ const App = (props) => {
                         <Form.Group className="mb-3" controlId="formIdFile">
                             <FormIdFileInput 
                                 section={section}
+                                idFileName={idFileName}
                                 setIdFileName={setIdFileName}
                                 setAppLoading={setAppLoading}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formDetailFile">
                             <FormDetailFileInput
+                                section={section}
                                 idFileName={idFileName}
                                 setDetailFileName={setDetailFileName}
                                 setAppLoading={setAppLoading}
@@ -133,8 +135,27 @@ const App = (props) => {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formAttachmentFile">
                             <FormAttachmentFileInput
+                                section={section}
+                                idFileName={idFileName}
                                 detailFileName={detailFileName}
                                 setAttachmentFileName={setAttachmentFileName}
+                                setAppLoading={setAppLoading}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formRetrySwitch">
+                            <FormRetrySwitch
+                                section={section}
+                                idFileName={idFileName}
+                                detailFileName={detailFileName}
+                                setRetrySwitch={setRetrySwitch}
+                                setAppLoading={setAppLoading}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formUpload">
+                            <FormUploadButton
+                                section={section}
+                                idFileName={idFileName}
+                                detailFileName={detailFileName}
                                 setAppLoading={setAppLoading}
                             />
                         </Form.Group>

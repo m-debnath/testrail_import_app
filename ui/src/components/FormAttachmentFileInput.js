@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 
 const FormAttachmentFileInput = (props) => {
-    const { detailFileName, setAttachmentFileName, setAppLoading } = props;
+    const { section, idFileName, detailFileName, setAttachmentFileName, setAppLoading } = props;
 
     return (
         <>
@@ -11,8 +11,8 @@ const FormAttachmentFileInput = (props) => {
                 id="formAttachmentFileInput"
                 type="file"
                 accept=".zip"
-                disabled={detailFileName===""}
-                onChange={(e) => setAttachmentFileName(e.target.files[0].name)}
+                disabled={section==="Select top section" || idFileName==="" || detailFileName===""}
+                onChange={(e) => setAttachmentFileName(e.target.files[0] ? e.target.files[0].name: "")}
             />
         </>
     );

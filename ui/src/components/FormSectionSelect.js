@@ -43,6 +43,9 @@ const FormSectionSelect = (props) => {
                 console.log(error);
                 setAppLoading(false);
             });
+        } else {
+            setItems([]);
+            setSection("Select top section");
         }
         return () => {
             unmounted = true;
@@ -54,7 +57,7 @@ const FormSectionSelect = (props) => {
             aria-label="Select top section" 
             className="w-100" 
             id="formSectionSelect"
-            disabled={loading}
+            disabled={loading || suite=="Select suite"}
             value={section}
             onChange={(e) => setSection(e.currentTarget.value)}
         >
