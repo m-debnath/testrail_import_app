@@ -143,3 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Security
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
