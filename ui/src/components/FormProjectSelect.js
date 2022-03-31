@@ -32,7 +32,10 @@ const FormProjectSelect = (props) => {
                 setAppLoading(false);
             }
         }
-        getProjects();
+        getProjects().catch(error => {
+            console.log(error);
+            setAppLoading(false);
+        });
         return () => {
             unmounted = true;
         };

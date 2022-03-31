@@ -35,7 +35,10 @@ const FormSuiteSelect = (props) => {
             }
         }
         if (project !== "Select project") {
-            getSuites();
+            getSuites().catch(error => {
+                console.log(error);
+                setAppLoading(false);
+            });
         }
         return () => {
             unmounted = true;
