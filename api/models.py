@@ -2,7 +2,6 @@ from django.db import models
 from string import ascii_lowercase
 from random import choices as random_choices
 from django.conf import settings
-import os
 
 def generate_unique_session_id():
     length = settings.SESSION_ID_MAX_LENGTH
