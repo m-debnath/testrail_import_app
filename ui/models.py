@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.db import models
 from string import ascii_lowercase
 from random import choices as random_choices
@@ -16,7 +17,7 @@ def upload_to(instance, filename):
 
 class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    updates_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     session_id = models.CharField(max_length=settings.SESSION_ID_MAX_LENGTH, default=generate_unique_session_id, unique=True)
     user = models.EmailField(max_length=254, default='trdjadmin@hobbycodes.com')
     id_file_name = models.FileField(upload_to=upload_to)
@@ -31,7 +32,7 @@ class Task(models.Model):
     retry_import = models.BooleanField(default=False)
     total_cases = models.IntegerField(default=0)
     imported_cases = models.IntegerField(default=0)
-    elapsed_time = models.DurationField(default=0)
+    elapsed_time = models.DurationField(default=timedelta)
     status = models.CharField(max_length=20, default='', blank=True, null=True)
 
     def __str__(self):

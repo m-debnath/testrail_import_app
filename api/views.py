@@ -1,6 +1,13 @@
 from django.http import HttpResponse
 import requests
 import json
+from .serializers import TaskSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import status
+from base64 import b64decode
+from rest_framework.permissions import AllowAny
 
 TESRAIL_BASE_URL = 'https://tele2se.testrail.net/index.php?/api/v2'
 
@@ -98,3 +105,34 @@ def get_sections(request, project_id=None, suite_id=None):
             content_type=response.headers['Content-Type']
         )
         return django_response
+
+
+class ProcessTask(APIView):
+    permission_classes = [AllowAny,]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, format=None):
+        request_headers = {}
+        username = ''
+        password = ''
+        for header in request.headers:
+            if header in ['Authorization', 'Accept', 'Accept-Encoding']:
+                request_headers[header] = request.headers[header]
+                if header == 'Authorization':
+                    username = b64decode(request.headers[header].split()[1]).decode('utf-8').split(':')[0]
+                    password = b64decode(request.headers[header].split()[1]).decode('utf-8').split(':')[1]
+        get_user_url = f'{TESRAIL_BASE_URL}{request.path.replace("/api", "").replace("/process_task", "")}get_user_by_email&email={username}'
+        get_user_response = requests.get(get_user_url, headers=request_headers)
+        if get_user_response.status_code == 200:
+            serializer = TaskSerializer(data=request.data, context={"request":request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(
+                data={},
+                status=get_user_response.status_code,
+                content_type=get_user_response.headers['Content-Type']
+            )
