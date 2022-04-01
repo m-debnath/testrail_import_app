@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { render } from "react-dom";
-import axios from "axios";
 import { Card } from 'react-bootstrap';
 import { Form } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
@@ -72,120 +70,125 @@ const App = (props) => {
 
     return (
         <div>
-            <Form>
-                <Card>
-                <Card.Body>
-                        <legend className="border-bottom mb-4 legend">Please select Testrail project, test suite and top section.&nbsp;
-                            <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={renderProjectTip}
-                            >
-                                <i className="fa fa-question-circle" aria-hidden="true"></i>
-                            </OverlayTrigger>
-                        </legend>
-                        <Form.Group className="mb-4" controlId="formProject">
-                            <FormProjectSelect 
-                                project={project}
-                                setProject={setProject}
-                                setAppLoading={setAppLoading}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-4" controlId="formSuite">
-                            <FormSuiteSelect 
-                                project={project}
-                                suite={suite}
-                                setSuite={setSuite}
-                                setAppLoading={setAppLoading}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-4" controlId="formSection">
-                            <FormSectionSelect 
-                                project={project}
-                                suite={suite}
-                                section={section}
-                                setSection={setSection}
-                                setAppLoading={setAppLoading}
-                            />
-                        </Form.Group>
-                        <legend className="border-bottom mb-4 legend">Please upload the spreadsheets and attachments exported from HP ALM.&nbsp;
-                            <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={renderFileTip}
-                            >
-                                <i className="fa fa-question-circle" aria-hidden="true"></i>
-                            </OverlayTrigger>
-                        </legend>
-                        <Form.Group className="mb-3" controlId="formIdFile">
-                            <FormIdFileInput 
-                                section={section}
-                                idFileName={idFileName}
-                                setIdFileName={setIdFileName}
-                                setAppLoading={setAppLoading}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formDetailFile">
-                            <FormDetailFileInput
-                                section={section}
-                                idFileName={idFileName}
-                                setDetailFileName={setDetailFileName}
-                                setAppLoading={setAppLoading}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formAttachmentFile">
-                            <FormAttachmentFileInput
-                                section={section}
-                                idFileName={idFileName}
-                                detailFileName={detailFileName}
-                                setAttachmentFileName={setAttachmentFileName}
-                                setAppLoading={setAppLoading}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formRetrySwitch">
-                            <FormRetrySwitch
-                                section={section}
-                                idFileName={idFileName}
-                                detailFileName={detailFileName}
-                                setRetrySwitch={setRetrySwitch}
-                                setAppLoading={setAppLoading}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formUpload">
-                            <FormUploadButton
-                                section={section}
-                                idFileName={idFileName}
-                                detailFileName={detailFileName}
-                                setAppLoading={setAppLoading}
-                            />
-                        </Form.Group>
-                </Card.Body>
-                </Card>
-            </Form>
-            <Modal 
-                show={apploading} 
-                backdrop="static" 
-                keyboard={false} 
-                animation={false}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <Modal.Body>
-                    <Container fluid>
-                            <Row>
-                                <Col className="text-center align-middle">
-                                <Spinner animation="border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </Spinner>
-                                </Col>
-                            </Row>
-                        </Container>
-                </Modal.Body>
-            </Modal>
+        {username
+            ? 
+            <div>
+                <Form>
+                    <Card>
+                    <Card.Body>
+                            <legend className="border-bottom mb-4 legend">Please select Testrail project, test suite and top section.&nbsp;
+                                <OverlayTrigger
+                                    placement="bottom"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={renderProjectTip}
+                                >
+                                    <i className="fa fa-question-circle" aria-hidden="true"></i>
+                                </OverlayTrigger>
+                            </legend>
+                            <Form.Group className="mb-4" controlId="formProject">
+                                <FormProjectSelect 
+                                    project={project}
+                                    setProject={setProject}
+                                    setAppLoading={setAppLoading}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-4" controlId="formSuite">
+                                <FormSuiteSelect 
+                                    project={project}
+                                    suite={suite}
+                                    setSuite={setSuite}
+                                    setAppLoading={setAppLoading}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-4" controlId="formSection">
+                                <FormSectionSelect 
+                                    project={project}
+                                    suite={suite}
+                                    section={section}
+                                    setSection={setSection}
+                                    setAppLoading={setAppLoading}
+                                />
+                            </Form.Group>
+                            <legend className="border-bottom mb-4 legend">Please upload the spreadsheets and attachments exported from HP ALM.&nbsp;
+                                <OverlayTrigger
+                                    placement="bottom"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={renderFileTip}
+                                >
+                                    <i className="fa fa-question-circle" aria-hidden="true"></i>
+                                </OverlayTrigger>
+                            </legend>
+                            <Form.Group className="mb-3" controlId="formIdFile">
+                                <FormIdFileInput 
+                                    section={section}
+                                    idFileName={idFileName}
+                                    setIdFileName={setIdFileName}
+                                    setAppLoading={setAppLoading}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formDetailFile">
+                                <FormDetailFileInput
+                                    section={section}
+                                    idFileName={idFileName}
+                                    setDetailFileName={setDetailFileName}
+                                    setAppLoading={setAppLoading}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formAttachmentFile">
+                                <FormAttachmentFileInput
+                                    section={section}
+                                    idFileName={idFileName}
+                                    detailFileName={detailFileName}
+                                    setAttachmentFileName={setAttachmentFileName}
+                                    setAppLoading={setAppLoading}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formRetrySwitch">
+                                <FormRetrySwitch
+                                    section={section}
+                                    idFileName={idFileName}
+                                    detailFileName={detailFileName}
+                                    setRetrySwitch={setRetrySwitch}
+                                    setAppLoading={setAppLoading}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formUpload">
+                                <FormUploadButton
+                                    section={section}
+                                    idFileName={idFileName}
+                                    detailFileName={detailFileName}
+                                    setAppLoading={setAppLoading}
+                                />
+                            </Form.Group>
+                    </Card.Body>
+                    </Card>
+                </Form>
+                <Modal 
+                    show={apploading} 
+                    backdrop="static" 
+                    keyboard={false} 
+                    animation={false}
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                >
+                    <Modal.Body>
+                        <Container fluid>
+                                <Row>
+                                    <Col className="text-center align-middle">
+                                    <Spinner animation="border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </Spinner>
+                                    </Col>
+                                </Row>
+                            </Container>
+                    </Modal.Body>
+                </Modal>
+            </div>
+            : <></>
+        }
         </div>
     );
 }
 
-const appDiv = document.getElementById("app");
-render(<App />, appDiv);
+export default App;

@@ -1,8 +1,8 @@
-import re
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from testrail import *
 from .forms import UserLoginForm
+from django.templatetags.static import static
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
@@ -18,6 +18,7 @@ def home(request):
         })
         return render(request, 'ui/home.html', {
             'session_data': session_data,
+            'STATIC_URL': static(''),
         })
     except KeyError:
         return redirect('login')
@@ -37,7 +38,11 @@ def login(request):
             return redirect('home')
         except KeyError:
             form = UserLoginForm()
-    return render(request, 'ui/login.html', {'form': form})
+    return render(request, 'ui/login.html', {
+        'form': form,
+        'session_data': {},
+        'STATIC_URL': static('')
+    })
 
 
 def logout(request):

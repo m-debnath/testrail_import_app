@@ -2,7 +2,8 @@
 {% load humanize %}
 {% block content %}
     <div id="main">
-        <script>let sessionData = {{ session_data|safe }}</script>
+        <script>var sessionData = {{ session_data|safe }}</script>
+        <script>var static_root = "{{ STATIC_URL }}"</script>
         <div id="app">
         </div>
     </div>
