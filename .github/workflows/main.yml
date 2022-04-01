@@ -24,7 +24,7 @@ jobs:
         target: "/oradiskvdb1/app/testrail_import_app"
   build:
     needs: deploy
-    name: Build Docker Image
+    name: Build Image and Run Container
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
