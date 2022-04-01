@@ -147,3 +147,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Security
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+# Timezone
+USE_TZ = True
+TIME_ZONE = 'Asia/Kolkata'
+
+# Custom
+SESSION_ID_MAX_LENGTH = 8
