@@ -8,7 +8,7 @@ const TechnologyStack = (props) => {
         <Accordion>
             <Accordion.Item eventKey="0">
                 <Accordion.Header>
-                    <legend className="text-center">Technology stack</legend>
+                    <legend className="text-center ps-4">Technology stack</legend>
                 </Accordion.Header>
                 <Accordion.Body>
                     <Row className="mt-4 mb-3">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Card } from 'react-bootstrap';
 import { Form } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
@@ -13,6 +14,10 @@ import FormDetailFileInput from "./FormDetailFileInput";
 import FormAttachmentFileInput from "./FormAttachmentFileInput";
 import FormRetrySwitch from "./FormRetrySwitch";
 import FormUploadButton from "./FormUploadButton";
+import AlertComponent from "./AlertComponent";
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const BASE_URL = `${location.origin}/api`;
 
@@ -47,33 +52,86 @@ const renderFileTip = (props) => (
 const App = (props) => {
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
-    const [project, setProject] = useState("Select project");
-    const [suite, setSuite] = useState("Select suite");
-    const [section, setSection] = useState("Select top section");
-    const [idFileName, setIdFileName] = useState("");
-    const [detailFileName, setDetailFileName] = useState("");
-    const [attachmentFileName, setAttachmentFileName] = useState("");
+    const [project, setProject] = useState({ id: "Select project", name: "Select project" });
+    const [suite, setSuite] = useState({ id: "Select suite", name: "Select suite" });
+    const [section, setSection] = useState({ id: "Select top section", name: "Select top section" });
+    const [idFileName, setIdFileName] = useState();
+    const [detailFileName, setDetailFileName] = useState();
+    const [attachmentFileName, setAttachmentFileName] = useState();
     const [retrySwitch, setRetrySwitch] = useState(false);
     const [apploading, setAppLoading] = useState(false);
-    
+    const [alertShow, setAlertShow] = useState(false);
+    const [alertLevel, setAlertLevel] = useState("success");
+    const [alertMessage, setAlertMessage] = useState("");
 
-    useEffect(() => {
-        console.log(project);
-        console.log(suite);
-        console.log(section);
-        console.log(idFileName);
-        console.log(detailFileName);
-        console.log(attachmentFileName);
-        console.log(retrySwitch);
-        console.log(apploading);
-    });
+    // useEffect(() => {
+    //     console.log(project);
+    //     console.log(suite);
+    //     console.log(section);
+    //     console.log(idFileName);
+    //     console.log(detailFileName);
+    //     console.log(attachmentFileName);
+    //     console.log(retrySwitch);
+    //     console.log(apploading);
+    // });
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation(); 
+        // console.log('Submitted');
+
+        let bodyFormData = new FormData();
+        bodyFormData.append('user', username);
+        bodyFormData.append('project_id', project.id);
+        bodyFormData.append('project_name', project.name);
+        bodyFormData.append('suite_id', suite.id);
+        bodyFormData.append('suite_name', suite.name);
+        bodyFormData.append('section_id', section.id);
+        bodyFormData.append('section_name', section.name);
+        bodyFormData.append('retry_import', retrySwitch ? 'True' : 'False');
+        bodyFormData.append('status', 'New');
+        bodyFormData.append('id_file_name', idFileName);
+        bodyFormData.append('steps_file_name', detailFileName);
+        bodyFormData.append('attachment_file_name', attachmentFileName);
+
+        async function submitTask(bodyFormData) {
+            setAppLoading(true);
+            let task_url = `${BASE_URL}/process_task/`;
+            const token = btoa(`${username}:${password}`)
+            const response = await axios({
+                method: "post",
+                url: task_url,
+                data: bodyFormData,
+                headers: {
+                    'Authorization': `Basic ${token}`,
+                    'content-type': 'multipart/form-data',
+                },
+            });
+            const taskResponse = await response.data;
+            setAppLoading(false);
+            setAlertLevel("success");
+            setAlertMessage("New testrail upload task is successfully created.")
+            setAlertShow(true);
+            // console.log(taskResponse);
+        }
+        submitTask(bodyFormData).catch(error => {
+            console.log(error);
+            setAppLoading(false);
+        });
+    };
 
     return (
         <div>
         {username
             ? 
             <div>
-                <Form>
+                <AlertComponent
+                    alertLevel={alertLevel}
+                    alertMessage={alertMessage}
+                    alertShow={alertShow}
+                    setAlertShow={setAlertShow}
+                />
+                <Form onSubmit={handleSubmit}>
                     <Card>
                     <Card.Body>
                             <legend className="border-bottom mb-4 legend">Please select Testrail project, test suite and top section.&nbsp;

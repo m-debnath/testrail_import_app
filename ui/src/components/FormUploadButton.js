@@ -2,15 +2,16 @@ import React from "react";
 import { Button } from "react-bootstrap";
 
 const FormUploadButton = (props) => {
-    const { section, idFileName, detailFileName, setAppLoading } = props;
+    const { section, idFileName, detailFileName, setUploadSubmit, setAppLoading } = props;
 
     return (
         <div className="d-grid">
             <Button 
                 if="formUploadButton"
                 variant="dark"
-                disabled={section==="Select top section" || idFileName==="" || detailFileName===""}
+                disabled={section.name==="Select top section" || idFileName===undefined || detailFileName===undefined}
                 size="lg"
+                type="submit"
             >
             Upload test cases to Testrail
             </Button>

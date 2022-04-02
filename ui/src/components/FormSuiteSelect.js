@@ -15,8 +15,8 @@ const FormSuiteSelect = (props) => {
     useEffect(() => {
         let unmounted = false;
         async function getSuites() {
-            let suites_url = `${BASE_URL}/get_suites/${project}`;
-            setSuite("Select suite");
+            let suites_url = `${BASE_URL}/get_suites/${project.id}`;
+            setSuite({ id: "Select suite", name: "Select suite" });
             setLoading(true);
             setAppLoading(true);
             const response = await axios.get(suites_url, {
@@ -24,7 +24,7 @@ const FormSuiteSelect = (props) => {
                     username: username,
                     password: password
                 }
-            })
+            });
             const body = await response.data;
             if (!unmounted) {
                 setItems(
@@ -34,14 +34,14 @@ const FormSuiteSelect = (props) => {
                 setAppLoading(false);
             }
         }
-        if (project !== "Select project") {
+        if (project.name !== "Select project") {
             getSuites().catch(error => {
                 console.log(error);
                 setAppLoading(false);
             });
         } else {
             setItems([]);
-            setSuite("Select suite");
+            setSuite({ id: "Select suite", name: "Select suite" });
         }
         return () => {
             unmounted = true;
@@ -51,11 +51,12 @@ const FormSuiteSelect = (props) => {
     return (
         <Form.Select 
             aria-label="Select suite" 
-            className="w-100" 
             id="formSuiteSelect"
-            disabled={loading || project=="Select project"}
-            value={suite}
-            onChange={(e) => setSuite(e.currentTarget.value)}
+            disabled={loading || project.name==="Select project"}
+            onChange={(e) => setSuite({
+                id: e.currentTarget.value,
+                name: e.currentTarget.options[e.currentTarget.selectedIndex].text
+            })}
         >
             <option key="Select suite" value="Select suite">
                 Select suite

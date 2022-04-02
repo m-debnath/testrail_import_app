@@ -36,4 +36,4 @@ class Task(models.Model):
     status = models.CharField(max_length=20, default='', blank=True, null=True)
 
     def __str__(self):
-        return "Session Id: " + self.session_id + ", User: " + self.user
+        return "Session Id: " + self.session_id + ", User: " + self.user + "Created at: " + str(self.created_at)

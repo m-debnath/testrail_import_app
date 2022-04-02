@@ -8,7 +8,7 @@ const FormRetrySwitch = (props) => {
         <>
         <Form.Label>Re-upload test cases?</Form.Label>
         <Form.Check 
-            disabled={section==="Select top section" || idFileName==="" || detailFileName===""}
+            disabled={section.name==="Select top section" || idFileName===undefined || detailFileName===undefined}
             type="switch"
             label="This will reprocess the test cases even if they have Testrail id populated in the test steps .xlsx file."
             id="formRetrywitchInput"

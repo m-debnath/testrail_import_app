@@ -13,14 +13,14 @@ const FormSectionSelect = (props) => {
     const [items, setItems] = React.useState([]);
 
     useEffect(() => {
-        setSection("Select top section");
+        setSection({ id: "Select top section", name: "Select top section" });
         setLoading(true);
     }, [project]);
 
     useEffect(() => {
         let unmounted = false;
         async function getSections() {
-            let sections_url = `${BASE_URL}/get_sections/${project}&suite_id=${suite}`;
+            let sections_url = `${BASE_URL}/get_sections/${project.id}&suite_id=${suite.id}`;
             setLoading(true);
             setAppLoading(true);
             const response = await axios.get(sections_url, {
@@ -28,7 +28,7 @@ const FormSectionSelect = (props) => {
                     username: username,
                     password: password
                 }
-            })
+            });
             const body = await response.data;
             if (!unmounted) {
                 setItems(
@@ -38,14 +38,14 @@ const FormSectionSelect = (props) => {
                 setAppLoading(false);
             }
         }
-        if (project !== "Select project" && suite !== "Select suite") {
+        if (project.name !== "Select project" && suite.name !== "Select suite") {
             getSections().catch(error => {
                 console.log(error);
                 setAppLoading(false);
             });
         } else {
             setItems([]);
-            setSection("Select top section");
+            setSection({ id: "Select top section", name: "Select top section" });
         }
         return () => {
             unmounted = true;
@@ -55,11 +55,12 @@ const FormSectionSelect = (props) => {
     return (
         <Form.Select 
             aria-label="Select top section" 
-            className="w-100" 
             id="formSectionSelect"
-            disabled={loading || suite=="Select suite"}
-            value={section}
-            onChange={(e) => setSection(e.currentTarget.value)}
+            disabled={loading || suite.name==="Select suite"}
+            onChange={(e) => setSection({
+                id: e.currentTarget.value,
+                name: e.currentTarget.options[e.currentTarget.selectedIndex].text
+            })}
         >
             <option key="Select top section" value="Select top section">
                 Select top section

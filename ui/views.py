@@ -27,8 +27,6 @@ def login(request):
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
-            successMessage = 'You\'re now successfully logged in as ' + form.cleaned_data.get('Name') + '.'
-            messages.success(request, successMessage)
             request.session['username'] = form.cleaned_data.get('username')
             request.session['password'] = form.cleaned_data.get('password')
             return redirect('home')

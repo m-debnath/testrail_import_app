@@ -16,13 +16,14 @@ const FormProjectSelect = (props) => {
         let unmounted = false;
         async function getProjects() {
             let projects_url = `${BASE_URL}/get_projects`;
+            setLoading(true);
             setAppLoading(true);
             const response = await axios.get(projects_url, {
                 auth: {
                     username: username,
                     password: password
                 }
-            })
+            });
             const body = await response.data;
             if (!unmounted) {
                 setItems(
@@ -44,12 +45,13 @@ const FormProjectSelect = (props) => {
     return (
         <Form.Select 
             aria-label="Select project" 
-            className="w-100" 
             autoFocus 
             id="formProjectSelect"
             disabled={loading}
-            value={project}
-            onChange={(e) => setProject(e.currentTarget.value)}
+            onChange={(e) => {setProject({
+                id: e.currentTarget.value,
+                name: e.currentTarget.options[e.currentTarget.selectedIndex].text
+            })}}
         >
             <option key="Select project" value="Select project">
                 Select project
