@@ -68,6 +68,7 @@ const App = (props) => {
     const EVENT_URL = new EventSource(`${BASE_URL}/events/${sessionData.username}/`);
     EVENT_URL.onmessage = function(e) {
         try {
+            console.log("Got Event");
             setCurrentTask(JSON.parse(e.data));
         } catch (error) {
             console.error(error);

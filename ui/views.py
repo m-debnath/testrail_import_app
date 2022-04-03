@@ -15,7 +15,7 @@ def home(request):
     try:
         username = request.session['username']
         password = request.session['password']
-        latest_task = Task.objects.filter(Q(user=username) & (Q(status="New") | Q(status="In Progress"))).first()
+        latest_task = Task.objects.filter(Q(user=username)).first()
         session_data = json.dumps({
             'username': username,
             'password': password,

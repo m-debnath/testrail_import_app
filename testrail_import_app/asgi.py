@@ -10,7 +10,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "testrail_import_app.settings")
 
 application = ProtocolTypeRouter({
     'http': URLRouter([
-        url(r'^api/events/(?P<user>[^/]+)/', AuthMiddlewareStack(
+        url(r'^api\/events\/(?P<user>[^\/]+)\/', AuthMiddlewareStack(
             URLRouter(django_eventstream.routing.urlpatterns)
         ), { 'format-channels': ['task-{user}'] }),
         url(r'', get_asgi_application()),
