@@ -112,7 +112,7 @@ const App = (props) => {
             const taskResponse = await response.data;
             setAppLoading(false);
             setAlertLevel("success");
-            setAlertMessage("New testrail upload task is successfully created.")
+            setAlertMessage(`New testrail upload task ${taskResponse.session_id} is successfully created.`)
             setAlertShow(true);
             setCurrentTask(taskResponse);
         }
