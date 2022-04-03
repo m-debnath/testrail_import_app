@@ -35,5 +35,8 @@ class Task(models.Model):
     elapsed_time = models.DurationField(default=timedelta)
     status = models.CharField(max_length=20, default='', blank=True, null=True)
 
+    class Meta:
+        ordering = ('-updated_at',)
+
     def __str__(self):
         return "Session Id: " + self.session_id + ", User: " + self.user + "Created at: " + str(self.created_at)

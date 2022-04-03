@@ -63,8 +63,9 @@ const App = (props) => {
     const [alertShow, setAlertShow] = useState(false);
     const [alertLevel, setAlertLevel] = useState("success");
     const [alertMessage, setAlertMessage] = useState("");
+    const [currentTask, setCurrentTask ] = useState(sessionData.latest_task)
 
-    // useEffect(() => {
+    useEffect(() => {
     //     console.log(project);
     //     console.log(suite);
     //     console.log(section);
@@ -73,7 +74,8 @@ const App = (props) => {
     //     console.log(attachmentFileName);
     //     console.log(retrySwitch);
     //     console.log(apploading);
-    // });
+        console.log(currentTask);
+    });
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -112,7 +114,7 @@ const App = (props) => {
             setAlertLevel("success");
             setAlertMessage("New testrail upload task is successfully created.")
             setAlertShow(true);
-            // console.log(taskResponse);
+            setCurrentTask(taskResponse);
         }
         submitTask(bodyFormData).catch(error => {
             console.log(error);

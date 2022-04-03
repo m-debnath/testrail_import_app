@@ -3,6 +3,9 @@ from django.contrib import messages
 from testrail import *
 from .forms import UserLoginForm
 from django.templatetags.static import static
+from .models import Task
+from django.db.models import Q
+from api.serializers import TaskSerializer
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
@@ -12,9 +15,11 @@ def home(request):
     try:
         username = request.session['username']
         password = request.session['password']
+        latest_task = Task.objects.filter(Q(user=username) & (Q(status="New") | Q(status="In Progress"))).first()
         session_data = json.dumps({
             'username': username,
-            'password': password
+            'password': password,
+            'latest_task': TaskSerializer(latest_task).data
         })
         return render(request, 'ui/home.html', {
             'session_data': session_data,
