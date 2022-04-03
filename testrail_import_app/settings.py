@@ -32,7 +32,7 @@ if ALLOWED_HOSTS_ENV:
     ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 
 # Event Stream
-EVENTSTREAM_ALLOW_ORIGIN = os.environ.get('EVENTSTREAM_ALLOW_ORIGIN')
+EVENTSTREAM_ALLOW_ORIGIN = '*'
 EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoModelStorage'
 
 # Channel Layer
@@ -47,7 +47,6 @@ CHANNEL_LAYERS = {
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
