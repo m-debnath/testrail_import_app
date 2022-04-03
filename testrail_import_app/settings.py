@@ -31,6 +31,10 @@ ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
 if ALLOWED_HOSTS_ENV:
     ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 
+# Event Stream
+EVENTSTREAM_ALLOW_ORIGIN = os.environ.get('EVENTSTREAM_ALLOW_ORIGIN')
+EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoModelStorage'
+
 
 # Application definition
 
@@ -47,6 +51,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.contrib.humanize',
     'rest_framework.authtoken',
+    'channels',
+    'django_eventstream',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django_grip.GripMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -85,6 +92,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'testrail_import_app.wsgi.application'
+ASGI_APPLICATION = 'testrail_import_app.asgi.application'
 
 
 # Database
@@ -99,7 +107,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

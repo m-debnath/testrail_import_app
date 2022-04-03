@@ -1,16 +1,18 @@
-"""
-ASGI config for testrail_import_app project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/3.2/howto/deployment/asgi/
-"""
-
 import os
-
+import django
 from django.core.asgi import get_asgi_application
+from django.conf.urls import url
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+import django_eventstream
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testrail_import_app.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "testrail_import_app.settings")
 
-application = get_asgi_application()
+application = ProtocolTypeRouter({
+    'http': URLRouter([
+        url(r'^api/events/(?P<user>[^/]+)/', AuthMiddlewareStack(
+            URLRouter(django_eventstream.routing.urlpatterns)
+        ), { 'format-channels': ['task-{user}'] }),
+        url(r'', get_asgi_application()),
+    ]),
+})

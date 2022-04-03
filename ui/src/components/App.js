@@ -64,16 +64,20 @@ const App = (props) => {
     const [alertLevel, setAlertLevel] = useState("success");
     const [alertMessage, setAlertMessage] = useState("");
     const [currentTask, setCurrentTask ] = useState(sessionData.latest_task)
+    
+    const EVENT_URL = new EventSource(`${BASE_URL}/events/${sessionData.username}/`);
+    EVENT_URL.onmessage = function(e) {
+        try {
+            setCurrentTask(JSON.parse(e.data));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    EVENT_URL.onerror = function(e) {
+        console.log("Server closed event connection!");
+    }
 
     useEffect(() => {
-    //     console.log(project);
-    //     console.log(suite);
-    //     console.log(section);
-    //     console.log(idFileName);
-    //     console.log(detailFileName);
-    //     console.log(attachmentFileName);
-    //     console.log(retrySwitch);
-    //     console.log(apploading);
         console.log(currentTask);
     });
 

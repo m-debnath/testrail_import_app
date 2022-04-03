@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 import requests
 import json
+from ui.models import Task
+from django.db.models import Q
 from .serializers import TaskSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,6 +10,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 from base64 import b64decode
 from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ModelViewSet
+from django_eventstream import send_event
 
 TESRAIL_BASE_URL = 'https://tele2se.testrail.net/index.php?/api/v2'
 
@@ -136,3 +140,12 @@ class ProcessTask(APIView):
                 status=get_user_response.status_code,
                 content_type=get_user_response.headers['Content-Type']
             )
+
+class EventStream(ModelViewSet):
+    permission_classes = (AllowAny,)
+
+    def store(self, request):
+        username = request.data.get('user', '')
+        latest_task = Task.objects.filter(Q(user=username) & (Q(status="New") | Q(status="In Progress"))).first()
+        send_event('task-{}'.format(username), 'message', TaskSerializer(latest_task).data)
+        return Response(request.data.get('user', ''), status=status.HTTP_200_OK)
