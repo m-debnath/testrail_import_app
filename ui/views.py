@@ -21,7 +21,6 @@ def home(request):
             'password': password,
             'latest_task': TaskSerializer(latest_task).data
         })
-        print(session_data)
         return render(request, 'ui/home.html', {
             'session_data': session_data,
             'STATIC_URL': static(''),

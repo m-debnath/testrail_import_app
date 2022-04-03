@@ -40,4 +40,4 @@ class Task(models.Model):
         ordering = ('-updated_at',)
 
     def __str__(self):
-        return "Session Id: " + self.session_id + ", User: " + self.user + "Created at: " + str(self.created_at)
+        return "Session Id: " + self.session_id + ", User: " + self.user + ", Created at: " + str(self.created_at)

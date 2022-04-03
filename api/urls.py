@@ -9,8 +9,5 @@ urlpatterns = [
     path('process_task/', views.ProcessTask.as_view()),
     path('create_event/', views.EventStream.as_view({
         'post': 'store',
-    }), name='create_message'),
-    path('events/<user>/', include(urls), {
-        'format-channels': ['task-{user}']
-    }),
+    }), name='create_event'),
 ]
