@@ -35,6 +35,16 @@ if ALLOWED_HOSTS_ENV:
 EVENTSTREAM_ALLOW_ORIGIN = os.environ.get('EVENTSTREAM_ALLOW_ORIGIN')
 EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoModelStorage'
 
+# Channel Layer
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis-server-name", 6379)],
+        },
+    },
+}
+
 
 # Application definition
 

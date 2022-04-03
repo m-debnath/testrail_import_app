@@ -22,6 +22,9 @@ services:
             - "8080:8080"
         depends_on:
             - ui
+    redis:
+        image: 'redis:alpine'
+        restart: always
     db:
         image: mysql/mysql-server:8.0-aarch64
         restart: always
