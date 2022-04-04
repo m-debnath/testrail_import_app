@@ -12,11 +12,20 @@ def import_task(self, task_id, auth_header):
     print(f'Task id: {task_id}')
     current_task = Task.objects.get(id=task_id)
     current_user = current_task.user
-    sleep(10)
-    current_task.status = "In Progress"
+
+    # Update total count
+    total_cases = 60
+    current_task.total_cases = total_cases
     current_task.save()
-    requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header})
-    sleep(10)
+
+    # Run Test case import here
+    for i in range(0, total_cases):
+        sleep(1)
+        current_task.status = "In Progress"
+        current_task.imported_cases = i + 1
+        current_task.save()
+        requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header})
+    
     current_task.status = "Complete"
     current_task.save()
     requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header})

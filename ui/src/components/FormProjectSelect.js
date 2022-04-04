@@ -5,7 +5,7 @@ import { Form } from "react-bootstrap";
 const BASE_URL = `${location.origin}/api`;
 
 const FormProjectSelect = (props) => {
-    const { project, setProject, setAppLoading } = props;
+    const { project, setProject, setAppLoading, taskInProgress } = props;
 
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
@@ -47,7 +47,7 @@ const FormProjectSelect = (props) => {
             aria-label="Select project" 
             autoFocus 
             id="formProjectSelect"
-            disabled={loading}
+            disabled={loading || taskInProgress}
             onChange={(e) => {setProject({
                 id: e.currentTarget.value,
                 name: e.currentTarget.options[e.currentTarget.selectedIndex].text

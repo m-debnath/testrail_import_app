@@ -5,7 +5,7 @@ import { Form } from "react-bootstrap";
 const BASE_URL = `${location.origin}/api`;
 
 const FormSectionSelect = (props) => {
-    const { project, suite, section, setSection, setAppLoading } = props;
+    const { project, suite, setSection, setAppLoading, taskInProgress } = props;
 
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
@@ -56,7 +56,7 @@ const FormSectionSelect = (props) => {
         <Form.Select 
             aria-label="Select top section" 
             id="formSectionSelect"
-            disabled={loading || suite.name==="Select suite"}
+            disabled={loading || suite.name==="Select suite" || taskInProgress}
             onChange={(e) => setSection({
                 id: e.currentTarget.value,
                 name: e.currentTarget.options[e.currentTarget.selectedIndex].text

@@ -5,7 +5,7 @@ import { Form } from "react-bootstrap";
 const BASE_URL = `${location.origin}/api`;
 
 const FormSuiteSelect = (props) => {
-    const { project, suite, setSuite, setAppLoading } = props;
+    const { project, setSuite, setAppLoading, taskInProgress } = props;
 
     const [username, setUsername] = useState(sessionData.username);
     const [password, setPassword] = useState(sessionData.password);
@@ -52,7 +52,7 @@ const FormSuiteSelect = (props) => {
         <Form.Select 
             aria-label="Select suite" 
             id="formSuiteSelect"
-            disabled={loading || project.name==="Select project"}
+            disabled={loading || project.name==="Select project" || taskInProgress}
             onChange={(e) => setSuite({
                 id: e.currentTarget.value,
                 name: e.currentTarget.options[e.currentTarget.selectedIndex].text

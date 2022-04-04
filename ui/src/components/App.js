@@ -14,7 +14,7 @@ import FormDetailFileInput from "./FormDetailFileInput";
 import FormAttachmentFileInput from "./FormAttachmentFileInput";
 import FormRetrySwitch from "./FormRetrySwitch";
 import FormUploadButton from "./FormUploadButton";
-import AlertComponent from "./AlertComponent";
+import ProgressBarComponent from "./ProgressBarComponent";
 
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
@@ -61,17 +61,13 @@ const App = (props) => {
     const [attachmentFileName, setAttachmentFileName] = useState();
     const [retrySwitch, setRetrySwitch] = useState(false);
     const [apploading, setAppLoading] = useState(false);
-    const [alertShow, setAlertShow] = useState(false);
-    const [alertLevel, setAlertLevel] = useState("success");
-    const [alertMessage, setAlertMessage] = useState("");
     const [currentTask, setCurrentTask ] = useState(sessionData.latest_task)
+    const [taskInProgress, setTaskInProgress] = useState(false);
     
     EVENT_URL.onmessage = function(e) {
         try {
-            console.log("Got Event");
             setCurrentTask(JSON.parse(e.data));
         } catch (error) {
-            console.error(error);
         }
     }
     EVENT_URL.onerror = function(e) {
@@ -79,7 +75,7 @@ const App = (props) => {
     }
 
     useEffect(() => {
-        console.log(currentTask);
+        currentTask.status === "In Progress" ? setTaskInProgress(true) : setTaskInProgress(false);
     });
 
     const handleSubmit = (event) => {
@@ -116,9 +112,6 @@ const App = (props) => {
             });
             const taskResponse = await response.data;
             setAppLoading(false);
-            setAlertLevel("success");
-            setAlertMessage(`New testrail upload task ${taskResponse.session_id} is successfully created.`)
-            setAlertShow(true);
             setCurrentTask(taskResponse);
         }
         submitTask(bodyFormData).catch(error => {
@@ -132,11 +125,8 @@ const App = (props) => {
         {username
             ? 
             <div>
-                <AlertComponent
-                    alertLevel={alertLevel}
-                    alertMessage={alertMessage}
-                    alertShow={alertShow}
-                    setAlertShow={setAlertShow}
+                <ProgressBarComponent
+                    currentTask={currentTask}
                 />
                 <Form onSubmit={handleSubmit}>
                     <Card>
@@ -155,23 +145,24 @@ const App = (props) => {
                                     project={project}
                                     setProject={setProject}
                                     setAppLoading={setAppLoading}
+                                    taskInProgress={taskInProgress}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-4" controlId="formSuite">
                                 <FormSuiteSelect 
                                     project={project}
-                                    suite={suite}
                                     setSuite={setSuite}
                                     setAppLoading={setAppLoading}
+                                    taskInProgress={taskInProgress}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-4" controlId="formSection">
                                 <FormSectionSelect 
                                     project={project}
                                     suite={suite}
-                                    section={section}
                                     setSection={setSection}
                                     setAppLoading={setAppLoading}
+                                    taskInProgress={taskInProgress}
                                 />
                             </Form.Group>
                             <legend className="border-bottom mb-4 legend">Please upload the spreadsheets and attachments exported from HP ALM.&nbsp;
@@ -186,9 +177,8 @@ const App = (props) => {
                             <Form.Group className="mb-3" controlId="formIdFile">
                                 <FormIdFileInput 
                                     section={section}
-                                    idFileName={idFileName}
                                     setIdFileName={setIdFileName}
-                                    setAppLoading={setAppLoading}
+                                    taskInProgress={taskInProgress}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formDetailFile">
@@ -196,7 +186,7 @@ const App = (props) => {
                                     section={section}
                                     idFileName={idFileName}
                                     setDetailFileName={setDetailFileName}
-                                    setAppLoading={setAppLoading}
+                                    taskInProgress={taskInProgress}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formAttachmentFile">
@@ -205,7 +195,7 @@ const App = (props) => {
                                     idFileName={idFileName}
                                     detailFileName={detailFileName}
                                     setAttachmentFileName={setAttachmentFileName}
-                                    setAppLoading={setAppLoading}
+                                    taskInProgress={taskInProgress}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formRetrySwitch">
@@ -214,7 +204,7 @@ const App = (props) => {
                                     idFileName={idFileName}
                                     detailFileName={detailFileName}
                                     setRetrySwitch={setRetrySwitch}
-                                    setAppLoading={setAppLoading}
+                                    taskInProgress={taskInProgress}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formUpload">
@@ -222,7 +212,7 @@ const App = (props) => {
                                     section={section}
                                     idFileName={idFileName}
                                     detailFileName={detailFileName}
-                                    setAppLoading={setAppLoading}
+                                    taskInProgress={taskInProgress}
                                 />
                             </Form.Group>
                     </Card.Body>
