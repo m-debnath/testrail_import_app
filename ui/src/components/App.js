@@ -20,6 +20,7 @@ axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const BASE_URL = `${location.origin}/api`;
+const EVENT_URL = new EventSource(`${BASE_URL}/events/${sessionData.username}/`);
 
 const renderProjectTip = (props) => (
     <Tooltip id="project-tooltip" {...props}>
@@ -65,7 +66,6 @@ const App = (props) => {
     const [alertMessage, setAlertMessage] = useState("");
     const [currentTask, setCurrentTask ] = useState(sessionData.latest_task)
     
-    const EVENT_URL = new EventSource(`${BASE_URL}/events/${sessionData.username}/`);
     EVENT_URL.onmessage = function(e) {
         try {
             console.log("Got Event");
