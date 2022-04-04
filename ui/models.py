@@ -8,7 +8,6 @@ def generate_unique_session_id():
     length = settings.SESSION_ID_MAX_LENGTH - 2
     while True:
         session_id = '1-' + ''.join(random_choices(ascii_uppercase + digits, k=length))
-        print(len(session_id))
         if Task.objects.filter(session_id=session_id).count() == 0:
             break
     return session_id
@@ -40,4 +39,4 @@ class Task(models.Model):
         ordering = ('-updated_at',)
 
     def __str__(self):
-        return "Session Id: " + self.session_id + ", User: " + self.user + ", Created at: " + str(self.created_at)
+        return "Id: " + str(self.pk) + ", Session Id: " + self.session_id + ", User: " + self.user + ", Status: " + str(self.status)

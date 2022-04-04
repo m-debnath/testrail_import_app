@@ -12,6 +12,7 @@ from base64 import b64decode
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 from django_eventstream import send_event
+from .tasks import import_task
 
 TESRAIL_BASE_URL = 'https://tele2se.testrail.net/index.php?/api/v2'
 
@@ -131,6 +132,8 @@ class ProcessTask(APIView):
             serializer = TaskSerializer(data=request.data, context={"request":request})
             if serializer.is_valid():
                 serializer.save()
+                print(serializer.data.get('id'), request.get_host(), request.headers['Authorization'])
+                import_task.delay(serializer.data.get('id'), request.headers['Authorization'])
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

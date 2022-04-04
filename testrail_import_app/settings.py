@@ -177,3 +177,9 @@ TIME_ZONE = 'Asia/Kolkata'
 
 # Custom
 SESSION_ID_MAX_LENGTH = 8
+
+# Celery
+CELERY_BROKER_URL = 'redis://celery-redis:6379'
+CELERY_RESULT_BACKEND = 'redis://celery-redis:6379'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
