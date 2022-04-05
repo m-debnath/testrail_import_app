@@ -41,7 +41,7 @@ const renderFileTip = (props) => (
     Open the file in Microsoft Excel and save it in .xlsx format.
     </div>
     <div className="mb-2">
-    The data must be in a worksheet named <span className="text-warning">Query1</span>.
+    The data must be in the <span className="text-warning">first</span> worksheet in both excel files.
     </div>
     <div>
     Gather all the attachment folders under a folder named <span className="text-warning">attachments</span>. <br></br>
