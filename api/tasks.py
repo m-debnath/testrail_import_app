@@ -2,8 +2,6 @@ from celery import shared_task
 from datetime import timedelta
 from time import monotonic_ns, sleep
 from ui.models import Task
-from .serializers import TaskSerializer
-from django_eventstream import send_event
 import requests
 import os
 from testrail import *
