@@ -2,8 +2,9 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from testrail import *
+import os
 
-TESTRAIL = APIClient('https://tele2se.testrail.net/')
+TESTRAIL = APIClient(os.environ.get('TESTRAIL_URL', 'https://tele2se.testrail.net/'))
 
 
 class UserLoginForm(AuthenticationForm):
