@@ -133,7 +133,7 @@ class ProcessTask(APIView):
             if serializer.is_valid():
                 serializer.save()
                 print(serializer.data.get('id'), request.get_host(), request.headers['Authorization'])
-                import_task.delay(serializer.data.get('id'), request.headers['Authorization'])
+                import_task.delay(serializer.data.get('id'), username, password, request.headers['Authorization'])
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

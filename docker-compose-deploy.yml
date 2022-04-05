@@ -11,7 +11,10 @@ services:
             - static_data:/vol/web
         environment:
             - SECRET_KEY=${DJANGO_SECRET_KEY}
-            - ALLOWED_HOSTS=testrailimport.hobbycodes.com,127.0.0.1,localhost
+            - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+            - CURRENT_HOST=${CURRENT_HOST}
+            - TESTRAIL_URL=${TESTRAIL_URL}
+            - EVENTSTREAM_ALLOW_ORIGIN=${EVENTSTREAM_ALLOW_ORIGIN}
     proxy:
         build:
             context: ./proxy

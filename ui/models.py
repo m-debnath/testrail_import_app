@@ -34,6 +34,7 @@ class Task(models.Model):
     imported_cases = models.IntegerField(default=0)
     elapsed_time = models.DurationField(default=timedelta)
     status = models.CharField(max_length=20, default='', blank=True, null=True)
+    status_message = models.TextField(default='', blank=True, null=True)
 
     class Meta:
         ordering = ('-updated_at',)
