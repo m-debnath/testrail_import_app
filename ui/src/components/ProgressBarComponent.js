@@ -15,7 +15,7 @@ const ProgressBarComponent = (props) => {
         progressInstance = <ProgressBar striped now={now} label={`${now}%`} visuallyHidden />;
         statusIcon = <i className="ps-1 fa fa-check" aria-hidden="true"></i>;
         downloadResult = <Row className="mt-2">
-            <Col>Download processed file with Testrail Ids: <a href={`${location.origin}${currentTask.steps_file_name}`} className="link-secondary">{currentTask.steps_file_name.split("/").at(-1)}</a> </Col>
+            <Col>Download processed file with Testrail Results: <a href={`${location.origin}${currentTask.steps_file_name}`} className="link-secondary">{currentTask.steps_file_name.split("/").at(-1)}</a> </Col>
         </Row>;
     } else {
         progressInstance = <ProgressBar animated now={now} label={`${now}%`} visuallyHidden />;
@@ -27,7 +27,7 @@ const ProgressBarComponent = (props) => {
                 <Row className="mb-2">
                     <Col>Task Id: {currentTask.session_id}</Col>
                     <Col className="text-center">Status: {currentTask.status}{statusIcon}</Col>
-                    <Col className="text-center">Processed: {currentTask.imported_cases} of {currentTask.total_cases}</Col>
+                    <Col className="text-right">Processed: {currentTask.imported_cases} of {currentTask.total_cases}</Col>
                 </Row>
                 {progressInstance}
                 {downloadResult}
