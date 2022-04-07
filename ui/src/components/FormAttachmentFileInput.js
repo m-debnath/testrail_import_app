@@ -11,7 +11,14 @@ const FormAttachmentFileInput = (props) => {
                 id="formAttachmentFileInput"
                 type="file"
                 accept=".zip"
-                disabled={section.name==="Select top section" || idFileName===undefined || detailFileName===undefined || taskInProgress}
+                disabled={
+                    section.name==="Select top section" || 
+                    idFileName===undefined || 
+                    idFileName==="" || 
+                    detailFileName===undefined || 
+                    detailFileName==="" || 
+                    taskInProgress
+                }
                 onChange={(e) => setAttachmentFileName(e.target.files[0] ? e.target.files[0]: "")}
             />
         </>

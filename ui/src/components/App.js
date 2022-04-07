@@ -203,6 +203,7 @@ const App = (props) => {
                                     section={section}
                                     idFileName={idFileName}
                                     detailFileName={detailFileName}
+                                    attachmentFileName={attachmentFileName}
                                     setRetrySwitch={setRetrySwitch}
                                     taskInProgress={taskInProgress}
                                 />
@@ -212,6 +213,7 @@ const App = (props) => {
                                     section={section}
                                     idFileName={idFileName}
                                     detailFileName={detailFileName}
+                                    attachmentFileName={attachmentFileName}
                                     taskInProgress={taskInProgress}
                                 />
                             </Form.Group>

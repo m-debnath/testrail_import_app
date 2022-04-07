@@ -11,7 +11,7 @@ const FormDetailFileInput = (props) => {
                 id="formIdFileInput"
                 type="file"
                 accept=".xlsx"
-                disabled={section.name==="Select top section" || idFileName===undefined || taskInProgress}
+                disabled={section.name==="Select top section" || idFileName===undefined || idFileName==="" || taskInProgress}
                 onChange={(e) => setDetailFileName(e.target.files[0] ? e.target.files[0]: "")}
             />
         </>
