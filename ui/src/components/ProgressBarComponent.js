@@ -7,7 +7,10 @@ import { Row, Col } from "react-bootstrap";
 const ProgressBarComponent = (props) => {
     const { currentTask } = props;
 
-    let now = parseInt(( currentTask.imported_cases / currentTask.total_cases ) * 100);
+    let now = 0.0;
+    if (currentTask.total_cases !== 0) {
+        now = (( currentTask.imported_cases / currentTask.total_cases ) * 100).toFixed(2);
+    }
 
     let progressInstance = <></>;
     let statusIcon = <></>;
@@ -26,6 +29,8 @@ const ProgressBarComponent = (props) => {
     }
 
     return(
+        <div>
+        {currentTask.session_id !== "" ? 
         <Card className="mb-2 pb-2">
             <Card.Body>
                 <Row className="mb-2 align-middle">
@@ -36,7 +41,8 @@ const ProgressBarComponent = (props) => {
                 {progressInstance}
                 {downloadResult}
             </Card.Body>
-        </Card>
+        </Card> : <></>}
+        </div>
     );
 }
 
