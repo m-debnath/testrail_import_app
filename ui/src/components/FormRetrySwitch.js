@@ -12,6 +12,7 @@ const FormRetrySwitch = (props) => {
             type="switch"
             label="This will reprocess the test cases even if they have Testrail id populated in the test steps .xlsx file."
             id="formRetrywitchInput"
+            defaultChecked
             onChange={(e) => setRetrySwitch(e.target.checked)}
         />
       </>
