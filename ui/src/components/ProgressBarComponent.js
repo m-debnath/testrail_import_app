@@ -18,11 +18,14 @@ const ProgressBarComponent = (props) => {
     let statusMessage = <></>;
     if (currentTask.status === "Complete" || currentTask.status === "Failed" || currentTask.status === "Cancelled") {
         progressInstance = <ProgressBar striped now={now} label={`${now}%`} visuallyHidden />;
-        statusIcon = <i className="ps-1 fa fa-check" aria-hidden="true"></i>;
+        if (currentTask.status === "Complete") {
+            statusIcon = <i className="ps-1 fa fa-check" aria-hidden="true"></i>;
+        }
         downloadResult = <Row className="mt-2">
             <Col>Download processed file with Testrail Results: <a href={`${location.origin}${currentTask.steps_file_name}`} className="link-secondary">{currentTask.steps_file_name.split("/").at(-1)}</a> </Col>
         </Row>;
         if (currentTask.status === "Failed") {
+            statusIcon = <i className="ps-1 fa fa-exclamation-circle" aria-hidden="true"></i>;
             statusMessage = <Row className="mt-2">
                 <Col>Status Message: {currentTask.status_message}</Col>
             </Row>;
