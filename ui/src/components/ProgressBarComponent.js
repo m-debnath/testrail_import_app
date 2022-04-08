@@ -15,12 +15,18 @@ const ProgressBarComponent = (props) => {
     let progressInstance = <></>;
     let statusIcon = <></>;
     let downloadResult = <></>;
-    if (currentTask.status === "Complete") {
+    let statusMessage = <></>;
+    if (currentTask.status === "Complete" || currentTask.status === "Failed" || currentTask.status === "Cancelled") {
         progressInstance = <ProgressBar striped now={now} label={`${now}%`} visuallyHidden />;
         statusIcon = <i className="ps-1 fa fa-check" aria-hidden="true"></i>;
         downloadResult = <Row className="mt-2">
             <Col>Download processed file with Testrail Results: <a href={`${location.origin}${currentTask.steps_file_name}`} className="link-secondary">{currentTask.steps_file_name.split("/").at(-1)}</a> </Col>
         </Row>;
+        if (currentTask.status === "Failed") {
+            statusMessage = <Row className="mt-2">
+                <Col>Status Message: {currentTask.status_message}</Col>
+            </Row>;
+        }
     } else if (currentTask.status === "In Progress") {
         progressInstance = <ProgressBar animated now={now} label={`${now}%`} visuallyHidden />;
         statusIcon = <Spinner className="ms-2" animation="border" role="status" size="sm" />;
@@ -40,6 +46,7 @@ const ProgressBarComponent = (props) => {
                 </Row>
                 {progressInstance}
                 {downloadResult}
+                {statusMessage}
             </Card.Body>
         </Card> : <></>}
         </div>
