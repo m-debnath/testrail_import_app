@@ -20,17 +20,7 @@ axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const BASE_URL = `${location.origin}/api`;
-// const EVENT_URL = new EventSource(`${BASE_URL}/events/${sessionData.username}/`);
-var es = new ReconnectingEventSource(`${BASE_URL}/events/${sessionData.username}/`);
-
-es.addEventListener('message', function (e) {
-    console.log(e.data);
-}, false);
-
-es.addEventListener('stream-reset', function (e) {
-    console.log("client fell behind, reinitialize ...");
-    // ... client fell behind, reinitialize ...
-}, false);
+const EVENT_URL = new EventSource(`${BASE_URL}/events/${sessionData.username}/`);
 
 const renderProjectTip = (props) => (
     <Tooltip id="project-tooltip" {...props}>
@@ -74,15 +64,15 @@ const App = (props) => {
     const [currentTask, setCurrentTask ] = useState(sessionData.latest_task)
     const [taskInProgress, setTaskInProgress] = useState(false);
     
-    // EVENT_URL.onmessage = function(e) {
-    //     try {
-    //         setCurrentTask(JSON.parse(e.data));
-    //     } catch (error) {
-    //     }
-    // }
-    // EVENT_URL.onerror = function(e) {
-    //     console.log("Server closed event connection!");
-    // }
+    EVENT_URL.onmessage = function(e) {
+        try {
+            setCurrentTask(JSON.parse(e.data));
+        } catch (error) {
+        }
+    }
+    EVENT_URL.onerror = function(e) {
+        console.log("Server closed event connection!");
+    }
 
     useEffect(() => {
         currentTask.status === "In Progress" ? setTaskInProgress(true) : setTaskInProgress(false);
