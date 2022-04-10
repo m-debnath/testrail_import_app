@@ -8,23 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  # deploy:
-  #   name: Deploy Files
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: copy files using ssh key
-  #     uses: appleboy/scp-action@master
-  #     with:
-  #       host: ${{ secrets.HOST }}
-  #       username: ${{ secrets.USERNAME }}
-  #       key: ${{ secrets.SSH2 }}
-  #       port: ${{ secrets.PORT }}
-  #       source: "."
-  #       target: "/app/testrail_import_app"
-  build:
-    # needs: deploy
-    name: Build Image and Run Container
+  deploy:
+    name: Pull main branch
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -36,3 +21,17 @@ jobs:
         key: ${{ secrets.SSH2 }}
         port: ${{ secrets.PORT }}
         script: "cd /app/testrailimport.hobbycodes.com && git pull origin main"
+  build:
+    needs: deploy
+    name: Build Image and Run Container
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: executing remote docker commands using ssh key
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH2 }}
+        port: ${{ secrets.PORT }}
+        script: "cd /app/testrailimport.hobbycodes.com && docker-compose -f .\docker-compose-deploy.yml up -d --build"
