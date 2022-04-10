@@ -59,7 +59,7 @@ const App = (props) => {
     const [idFileName, setIdFileName] = useState();
     const [detailFileName, setDetailFileName] = useState();
     const [attachmentFileName, setAttachmentFileName] = useState();
-    const [retrySwitch, setRetrySwitch] = useState(false);
+    const [retrySwitch, setRetrySwitch] = useState(true);
     const [apploading, setAppLoading] = useState(false);
     const [currentTask, setCurrentTask ] = useState(sessionData.latest_task)
     const [taskInProgress, setTaskInProgress] = useState(false);
@@ -76,6 +76,7 @@ const App = (props) => {
 
     useEffect(() => {
         currentTask.status === "In Progress" ? setTaskInProgress(true) : setTaskInProgress(false);
+        console.log(retrySwitch);
     });
 
     const handleSubmit = (event) => {
