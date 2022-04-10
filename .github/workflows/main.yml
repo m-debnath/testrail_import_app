@@ -36,4 +36,4 @@ jobs:
         key: ${{ secrets.SSH2 }}
         port: ${{ secrets.PORT }}
         script_stop: true
-        script: "cd /app/testrailimport.hobbycodes.com && docker-compose -f docker-compose-deploy.yml up -d --build"
+        script: "cd /app/testrailimport.hobbycodes.com && sudo docker-compose -f docker-compose-deploy.yml up -d --build"

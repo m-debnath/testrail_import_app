@@ -14,7 +14,6 @@ services:
             - ALLOWED_HOSTS=${ALLOWED_HOSTS}
             - CURRENT_HOST=${CURRENT_HOST}
             - TESTRAIL_URL=${TESTRAIL_URL}
-            - EVENTSTREAM_ALLOW_ORIGIN=${EVENTSTREAM_ALLOW_ORIGIN}
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     proxy:
         build:
