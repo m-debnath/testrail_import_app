@@ -75,7 +75,9 @@ const App = (props) => {
     }
 
     useEffect(() => {
-        currentTask.status === "In Progress" ? setTaskInProgress(true) : setTaskInProgress(false);
+        if (currentTask !== undefined) {
+            currentTask.status === "In Progress" ? setTaskInProgress(true) : setTaskInProgress(false);
+        }
     });
 
     const handleSubmit = (event) => {

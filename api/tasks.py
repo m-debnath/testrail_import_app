@@ -131,7 +131,6 @@ def create_section(project_id, suite_id, parent_id, name):
 
 def create_test_case(section_id, test_case):
     uri = 'add_case/' + str(section_id)
-    print(test_case)
     case = make_api_post_request(uri, test_case)
     return case['id']
 
