@@ -21,7 +21,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const BASE_URL = `${location.origin}/api`;
 // const EVENT_URL = new EventSource(`${BASE_URL}/events/${sessionData.username}/`);
-var es = new ReconnectingEventSource('/events/');
+var es = new ReconnectingEventSource(`${BASE_URL}/events/${sessionData.username}/`);
 
 es.addEventListener('message', function (e) {
     console.log(e.data);
