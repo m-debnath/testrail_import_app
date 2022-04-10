@@ -33,7 +33,7 @@ if ALLOWED_HOSTS_ENV:
 
 # Event Stream
 EVENTSTREAM_ALLOW_ORIGIN = '*'
-# EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoModelStorage'
+EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoModelStorage'
 
 # Channel Layer
 # CHANNEL_LAYERS = {
