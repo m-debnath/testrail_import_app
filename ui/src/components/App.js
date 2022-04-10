@@ -76,13 +76,11 @@ const App = (props) => {
 
     useEffect(() => {
         currentTask.status === "In Progress" ? setTaskInProgress(true) : setTaskInProgress(false);
-        console.log(retrySwitch);
     });
 
     const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation(); 
-        // console.log('Submitted');
 
         let bodyFormData = new FormData();
         bodyFormData.append('user', username);

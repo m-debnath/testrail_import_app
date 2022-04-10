@@ -150,5 +150,5 @@ class EventStream(ModelViewSet):
     def store(self, request):
         username = request.data.get('user', '')
         latest_task = Task.objects.filter(Q(user=username)).first()
-        send_event('task-{}'.format(username), 'message', TaskSerializer(latest_task).data)
+        send_event('task-{}'.format(username), 'message', TaskSerializer(latest_task).data, async_publish=False)
         return Response(TaskSerializer(latest_task).data, status=status.HTTP_200_OK)
