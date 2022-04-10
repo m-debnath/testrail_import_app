@@ -38,8 +38,7 @@ services:
             MYSQL_DATABASE: testrail_import_db
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         volumes:
-            - db_data:/var/lib/mysql
+            - .dbdata:/var/lib/mysql
 
 volumes:
     static_data:
-    db_data:
