@@ -21,7 +21,7 @@ jobs:
         key: ${{ secrets.SSH2 }}
         port: ${{ secrets.PORT }}
         script_stop: true
-        script: "cd /app/testrailimport.hobbycodes.com && git pull origin main"
+        script: "cd /app/testrailimport.hobbycodes.com && git reset --hard && git pull origin main"
   build:
     needs: deploy
     name: Build Image and Run Container
