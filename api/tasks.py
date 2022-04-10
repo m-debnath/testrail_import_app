@@ -16,7 +16,7 @@ ATTACHMENT_URL_PREFIX = f'{TESTRAIL_BASE_URL}index.php?/attachments/get/'
 TEST_CASE_URL_PREFIX = f'{TESTRAIL_BASE_URL}index.php?/cases/view/'
 
 PROJECT_ID      = None      # Evaluate Testrail Baltics option 2
-TYPE_ID         = 6         # Functional
+TYPE_ID         = 9         # Regression
 PRIORITY_ID     = 2         # Medium
 SUITE_ID        = None      # Evaluate Testrail Baltics option 2 > Regression 1312
 TEMPLATE_ID     = 2         # Test Case (Steps)
@@ -30,20 +30,28 @@ CUSTOM_FIELD_STATUS_FOR_ETI       = "custom_statusforeti"
 CUSTOM_FIELD_STATUS_FOR_SVE       = "custom_statusforsve"
 CUSTOM_FIELD_REQUIREMENT_COVERAGE = "custom_requirementcoverage"
 CUSTOM_FIELD_MAPPING_FIELD_SAF    = "custom_mappingfieldinsaf"
+CUSTOM_FIELD_QC_REF               = "custom_qcidreference"
 
 ALL_TESTRAIL_SECTIONS = []  # Local cache for Testrail sections
 
 BUSINESS_CRITICALMAPPING = {
-    "Tier 1": 1,
-    "Tier 2": 2,
-    "Tier 3": 3,
+    "Tier 1":           1,
+    "Tier 2":           2,
+    "Tier 3":           3,
+    "xKeyscenarioT1":   4,
 }
 
 STATUS_FOR_COUNTRY_MAPPING = {
-    "1-Draft": 1,
-    "3-Designed": 2,
-    "4-Approved": 3,
-    "9-Broken": 4,
+    "10-Not for Automation":    1,
+    "1-Draft":                  2,
+    "2-Open":                   3,
+    "3-Designed":               4,
+    "4-Approved":               5,
+    "5- Must Run in RT":        6,
+    "6-Rejected":               7,
+    "7-Cancelled":              8,
+    "8-Ready For Automation":   9,
+    "9-Broken":                 10,
 }
 
 def make_api_get_request(uri):
@@ -123,7 +131,7 @@ def create_section(project_id, suite_id, parent_id, name):
 
 def create_test_case(section_id, test_case):
     uri = 'add_case/' + str(section_id)
-
+    print(test_case)
     case = make_api_post_request(uri, test_case)
     return case['id']
 
@@ -419,7 +427,7 @@ def import_task(self, task_id, username, password, auth_header):
                     'priority_id': PRIORITY_ID,
                     'suite_id': SUITE_ID,
                     'custom_preconds': test_case_precond,
-                    'refs': 'QC-' + str(test_case_id),
+                    CUSTOM_FIELD_QC_REF: str(test_case_id),
                     CUSTOM_FIELD_BUSINESS_CRITICAL: business_critical,
                     CUSTOM_FIELD_STATUS_FOR_LVI: status_for_lvi,
                     CUSTOM_FIELD_STATUS_FOR_LTH: status_for_lth,

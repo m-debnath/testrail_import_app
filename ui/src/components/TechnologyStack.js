@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
+import { Toast } from "react-bootstrap";
+import moment from 'moment';
 
 const TechnologyStack = (props) => {
+    const [showA, setShowA] = useState(true);
+    const toggleShowA = () => setShowA(!showA);
+
     return (
         <>
+        <Toast show={showA} onClose={toggleShowA} className="w-100 mb-3">
+        <Toast.Header closeButton={false}>
+            <i className="fa fa-comments me-2" aria-hidden="true"></i>
+            <strong className="me-auto">Announcement</strong>
+            <small>{moment("20220411", "YYYYMMDD").fromNow()}</small>
+        </Toast.Header>
+        <Toast.Body>Importing is now allowed only for <strong>Siebel CRM</strong> project with custom fields. Test Cases will be created as Regression type.</Toast.Body>
+        </Toast>
         <Accordion>
             <Accordion.Item eventKey="0">
                 <Accordion.Header>

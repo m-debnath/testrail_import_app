@@ -15,6 +15,7 @@ from django_eventstream import send_event
 from .tasks import import_task
 
 TESRAIL_BASE_URL = 'https://tele2se.testrail.net/index.php?/api/v2'
+ALLOWED_PROJECTS = ['Siebel CRM']
 
 def get_projects(request):
     global TESRAIL_BASE_URL
@@ -43,6 +44,7 @@ def get_projects(request):
                     content_type=response.headers['Content-Type']
                 )
                 return django_response
+        projects = [project for project in projects if project.get('name') in ALLOWED_PROJECTS]
         django_response = HttpResponse(
             content=json.dumps(projects),
             status=response.status_code,
