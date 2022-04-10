@@ -13,6 +13,7 @@ services:
             - .:/app
         environment:
             - DEBUG=1
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         command: sh -c "celery -A testrail_import_app worker -l info --detach && ./wait-for db:3306 -- python manage.py runserver 0.0.0.0:8000"
     redis:
         image: 'redis:alpine'

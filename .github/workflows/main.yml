@@ -8,22 +8,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
-    name: Deploy Files
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: copy files using ssh key
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH2 }}
-        port: ${{ secrets.PORT }}
-        source: "."
-        target: "/oradiskvdb1/app/testrail_import_app"
+  # deploy:
+  #   name: Deploy Files
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: copy files using ssh key
+  #     uses: appleboy/scp-action@master
+  #     with:
+  #       host: ${{ secrets.HOST }}
+  #       username: ${{ secrets.USERNAME }}
+  #       key: ${{ secrets.SSH2 }}
+  #       port: ${{ secrets.PORT }}
+  #       source: "."
+  #       target: "/app/testrail_import_app"
   build:
-    needs: deploy
+    # needs: deploy
     name: Build Image and Run Container
     runs-on: ubuntu-latest
     steps:
@@ -35,4 +35,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH2 }}
         port: ${{ secrets.PORT }}
-        script: ./deploy-testrail-import-app.sh
+        script: "cd /app/testrailimport.hobbycodes.com && git pull origin main"

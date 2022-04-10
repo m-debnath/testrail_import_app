@@ -111,7 +111,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'testrail_import_db',
         'USER': 'tradmin',
-        'PASSWORD': 'Te5trailPa##w0rd',
+        'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD', 'changeme'),
         'HOST': 'db',
         'PORT': '3306',
     }
