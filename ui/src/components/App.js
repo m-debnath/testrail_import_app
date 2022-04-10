@@ -131,7 +131,7 @@ const App = (props) => {
                 <Form onSubmit={handleSubmit}>
                     <Card>
                     <Card.Body>
-                            <legend className="border-bottom mb-4 legend">Please select Testrail project, test suite and top section.&nbsp;
+                            <legend className="border-bottom mb-4 legend">Please select Testrail1 project, test suite and top section.&nbsp;
                                 <OverlayTrigger
                                     placement="bottom"
                                     delay={{ show: 250, hide: 400 }}
