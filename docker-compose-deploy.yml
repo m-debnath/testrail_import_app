@@ -33,7 +33,7 @@ services:
         image: 'redis:alpine'
         restart: always
     db:
-        image: mysql/mysql-server:8.0-aarch64
+        image: mysql/mysql-server
         restart: always
         environment:
             MYSQL_DATABASE: testrail_import_db
