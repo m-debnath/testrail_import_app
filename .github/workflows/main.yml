@@ -20,6 +20,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH2 }}
         port: ${{ secrets.PORT }}
+        script_stop: true
         script: "cd /app/testrailimport.hobbycodes.com && git pull origin main"
   build:
     needs: deploy
@@ -34,4 +35,5 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH2 }}
         port: ${{ secrets.PORT }}
-        script: "cd /app/testrailimport.hobbycodes.com && docker-compose -f .\docker-compose-deploy.yml up -d --build"
+        script_stop: true
+        script: "cd /app/testrailimport.hobbycodes.com && docker-compose -f docker-compose-deploy.yml up -d --build"
