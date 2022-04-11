@@ -21,7 +21,7 @@ const ProgressBarComponent = (props) => {
     if (currentTask.status === "Complete" || currentTask.status === "Failed" || currentTask.status === "Cancelled") {
         progressInstance = <ProgressBar striped now={now} label={`${now}%`} visuallyHidden />;
         if (currentTask.status === "Complete") {
-            elapsedTime = <>d&nbsp;in about {moment.duration(currentTask.elapsed_time.split(`.`)[0], "HH:mm:ss").humanize()}.&nbsp;</>;
+            elapsedTime = <>d in about {moment.duration(currentTask.elapsed_time.split(`.`)[0], "HH:mm:ss").humanize()}.</>;
             statusIcon = <i className="ps-1 fa fa-check" aria-hidden="true"></i>;
         }
         if (currentTask.imported_cases > 0) {

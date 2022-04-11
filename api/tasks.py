@@ -491,7 +491,7 @@ def import_task(self, task_id, username, password, auth_header):
         wb.save(qc_dump_file)
         wb.close()
         end = monotonic_ns()
-        current_task.status_message = "Test cases imported. Successfully updated dump file with Testrail Ids. Exit."
+        current_task.status_message = "Test cases imported. Successfully updated dump file with Testrail Ids."
         current_task.status = "Complete"
         current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
         current_task.save()
