@@ -336,7 +336,7 @@ def import_task(self, task_id, username, password, auth_header):
         unpack_archive(attachment_file, settings.MEDIA_ROOT + '/' + current_task.user + '/' + current_task.session_id)
     except Exception:
         end = monotonic_ns()
-        current_task.status_message = "Can't unpack " + attachment_file + ". Exit."
+        current_task.status_message = "Can't unpack " + attachment_file + "."
         current_task.error_message = traceback.format_exc()
         current_task.status = "Failed"
         current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
@@ -351,7 +351,7 @@ def import_task(self, task_id, username, password, auth_header):
         max_row_id = ws_id.max_row
     except Exception:
         end = monotonic_ns()
-        current_task.status_message = "Can't load QC Ids excel file. Exit."
+        current_task.status_message = "Can't load QC Ids excel file."
         current_task.error_message = traceback.format_exc()
         current_task.status = "Failed"
         current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
@@ -373,7 +373,7 @@ def import_task(self, task_id, username, password, auth_header):
         max_row = ws.max_row
     except Exception:
         end = monotonic_ns()
-        current_task.status_message = "Can't load QC Test Steps excel file. Exit."
+        current_task.status_message = "Can't load QC Test Steps excel file."
         current_task.error_message = traceback.format_exc()
         current_task.status = "Failed"
         current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
@@ -500,7 +500,7 @@ def import_task(self, task_id, username, password, auth_header):
         wb.save(qc_dump_file)
         wb.close()
         end = monotonic_ns()
-        current_task.status_message = "Error: " + str(e) + ". Exit."
+        current_task.status_message = str(e) + "."
         current_task.error_message = traceback.format_exc()
         current_task.status = "Failed"
         current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))

@@ -3,6 +3,7 @@ import { ProgressBar } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
+import moment from 'moment';
 
 const ProgressBarComponent = (props) => {
     const { currentTask } = props;
@@ -16,9 +17,11 @@ const ProgressBarComponent = (props) => {
     let statusIcon = <></>;
     let downloadResult = <></>;
     let statusMessage = <></>;
+    let elapsedTime = <></>;
     if (currentTask.status === "Complete" || currentTask.status === "Failed" || currentTask.status === "Cancelled") {
         progressInstance = <ProgressBar striped now={now} label={`${now}%`} visuallyHidden />;
         if (currentTask.status === "Complete") {
+            elapsedTime = <>d&nbsp;in about {moment.duration(currentTask.elapsed_time.split(`.`)[0], "HH:mm:ss").humanize()}.&nbsp;</>;
             statusIcon = <i className="ps-1 fa fa-check" aria-hidden="true"></i>;
         }
         downloadResult = <Row className="mt-2">
@@ -27,7 +30,7 @@ const ProgressBarComponent = (props) => {
         if (currentTask.status === "Failed") {
             statusIcon = <i className="ps-1 fa fa-exclamation-circle" aria-hidden="true"></i>;
             statusMessage = <Row className="mt-2">
-                <Col>Status Message: {currentTask.status_message}</Col>
+                <Col className="text-danger">Error: {currentTask.status_message}</Col>
             </Row>;
         }
     } else if (currentTask.status === "In Progress") {
@@ -44,7 +47,7 @@ const ProgressBarComponent = (props) => {
             <Card.Body>
                 <Row className="mb-2 align-middle">
                     <Col>Task Id: {currentTask.session_id}</Col>
-                    <Col className="text-center">Status: {currentTask.status}{statusIcon}</Col>
+                    <Col xs={6} className="text-center">Status: {currentTask.status}{elapsedTime}{statusIcon}</Col>
                     <Col style={{"text-align": "right"}}>Processed: {currentTask.imported_cases} of {currentTask.total_cases}</Col>
                 </Row>
                 {progressInstance}
