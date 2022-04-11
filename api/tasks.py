@@ -9,6 +9,7 @@ import re
 from shutil import unpack_archive
 from django.conf import settings
 import openpyxl
+import traceback
 
 TESTRAIL_BASE_URL = os.environ.get('TESTRAIL_URL', 'https://tele2se.testrail.net/')
 TESTRAIL = APIClient(TESTRAIL_BASE_URL)
@@ -331,16 +332,27 @@ def import_task(self, task_id, username, password, auth_header):
     requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
 
     start = monotonic_ns()
-    unpack_archive(attachment_file, settings.MEDIA_ROOT + '/' + current_task.user + '/' + current_task.session_id)
+    try:
+        unpack_archive(attachment_file, settings.MEDIA_ROOT + '/' + current_task.user + '/' + current_task.session_id)
+    except Exception:
+        end = monotonic_ns()
+        current_task.status_message = "Can't unpack " + attachment_file + ". Exit."
+        current_task.error_message = traceback.format_exc()
+        current_task.status = "Failed"
+        current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
+        current_task.save()
+        requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
+        return
 
     # loads the test case ids extracted from qc
     try:
         wb_id = openpyxl.load_workbook(qc_id_file, data_only=True)
         ws_id = wb_id.worksheets[0]
         max_row_id = ws_id.max_row
-    except OSError:
+    except Exception:
         end = monotonic_ns()
-        current_task.status_message = "Can't load QC Ids file. Exit."
+        current_task.status_message = "Can't load QC Ids excel file. Exit."
+        current_task.error_message = traceback.format_exc()
         current_task.status = "Failed"
         current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
         current_task.save()
@@ -359,9 +371,10 @@ def import_task(self, task_id, username, password, auth_header):
         wb = openpyxl.load_workbook(qc_dump_file, data_only=True)
         ws = wb.worksheets[0]
         max_row = ws.max_row
-    except OSError:
+    except Exception:
         end = monotonic_ns()
-        current_task.status_message = "Can't load QC Test Steps file. Exit."
+        current_task.status_message = "Can't load QC Test Steps excel file. Exit."
+        current_task.error_message = traceback.format_exc()
         current_task.status = "Failed"
         current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
         current_task.save()
@@ -488,6 +501,7 @@ def import_task(self, task_id, username, password, auth_header):
         wb.close()
         end = monotonic_ns()
         current_task.status_message = "Error: " + str(e) + ". Exit."
+        current_task.error_message = traceback.format_exc()
         current_task.status = "Failed"
         current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
         current_task.save()

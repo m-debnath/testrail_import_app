@@ -1,11 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AssetsPlugin = require('assets-webpack-plugin');
+const assetsPluginInstance = new AssetsPlugin();
 
 module.exports = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "./static/ui"),
-        filename: "[name].js",
+        filename: "[name].[contenthash].js",
     },
     module: {
         rules: [
@@ -32,6 +35,17 @@ module.exports = {
     },
     optimization: {
         minimize: true,
+        moduleIds: 'deterministic',
+        runtimeChunk: 'single',
+        splitChunks: {
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+            },
+          },
+        },
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -40,5 +54,7 @@ module.exports = {
                 NODE_ENV: JSON.stringify("production"),
             },
         }),
+        new HtmlWebpackPlugin(),
+        assetsPluginInstance,
     ],
 };

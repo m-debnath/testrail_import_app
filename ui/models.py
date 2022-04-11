@@ -35,6 +35,7 @@ class Task(models.Model):
     elapsed_time = models.DurationField(default=timedelta)
     status = models.CharField(max_length=20, default='', blank=True, null=True)
     status_message = models.TextField(default='', blank=True, null=True)
+    error_message = models.TextField(default='', blank=True, null=True)
 
     class Meta:
         ordering = ('-updated_at',)
