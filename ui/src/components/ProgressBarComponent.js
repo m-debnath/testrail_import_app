@@ -24,9 +24,11 @@ const ProgressBarComponent = (props) => {
             elapsedTime = <>d&nbsp;in about {moment.duration(currentTask.elapsed_time.split(`.`)[0], "HH:mm:ss").humanize()}.&nbsp;</>;
             statusIcon = <i className="ps-1 fa fa-check" aria-hidden="true"></i>;
         }
-        downloadResult = <Row className="mt-2">
-            <Col>Download processed file with Testrail information: <a href={`${location.origin}${currentTask.steps_file_name}`} className="link-secondary">{currentTask.steps_file_name.split("/").at(-1)}</a> </Col>
-        </Row>;
+        if (currentTask.imported_cases > 0) {
+            downloadResult = <Row className="mt-2">
+                <Col>Download processed file with Testrail information: <a href={`${location.origin}${currentTask.steps_file_name}`} className="link-secondary">{currentTask.steps_file_name.split("/").at(-1)}</a> </Col>
+            </Row>;
+        }
         if (currentTask.status === "Failed") {
             statusIcon = <i className="ps-1 fa fa-exclamation-circle" aria-hidden="true"></i>;
             statusMessage = <Row className="mt-2">
