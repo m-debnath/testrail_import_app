@@ -8,7 +8,6 @@ const FormDetailFileInput = (props) => {
         <>
             <Form.Label>File containing QC test case with steps.xlsx</Form.Label>
             <Form.Control 
-                id="formIdFileInput"
                 type="file"
                 accept=".xlsx"
                 disabled={section.name==="Select top section" || idFileName===undefined || idFileName==="" || taskInProgress}

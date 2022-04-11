@@ -5,6 +5,25 @@ import { Card } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
 import moment from 'moment';
 
+const humanizeDuration = (duration) => {
+    let op = [];
+    duration = duration.split(`.`)[0];
+
+    let hh = duration.split(`:`)[0];
+    let mm = duration.split(`:`)[1];
+    let ss = duration.split(`:`)[2];
+
+    hh = hh === '00' ? '' : hh.startsWith('0') ? hh[1] + 'h' : hh + 'h';
+    mm = mm === '00' ? '' : mm.startsWith('0') ? mm[1] + 'm' : mm + 'm';
+    ss = ss === '00' ? '' : ss.startsWith('0') ? ss[1] + 's' : ss + 's';
+
+    op.push(hh);
+    op.push(mm);
+    op.push(ss);
+
+    return op.join(' ').trim();
+}
+
 const ProgressBarComponent = (props) => {
     const { currentTask } = props;
 
@@ -21,7 +40,7 @@ const ProgressBarComponent = (props) => {
     if (currentTask.status === "Complete" || currentTask.status === "Failed" || currentTask.status === "Cancelled") {
         progressInstance = <ProgressBar striped now={now} label={`${now}%`} visuallyHidden />;
         if (currentTask.status === "Complete") {
-            elapsedTime = <>d in about {moment.duration(currentTask.elapsed_time.split(`.`)[0], "HH:mm:ss").humanize()}.</>;
+            elapsedTime = <>d in {humanizeDuration(currentTask.elapsed_time)}.</>;
             statusIcon = <i className="ps-1 fa fa-check" aria-hidden="true"></i>;
         }
         if (currentTask.imported_cases > 0) {
@@ -50,7 +69,7 @@ const ProgressBarComponent = (props) => {
                 <Row className="mb-2 align-middle">
                     <Col>Task Id: {currentTask.session_id}</Col>
                     <Col xs={6} className="text-center">Status: {currentTask.status}{elapsedTime}{statusIcon}</Col>
-                    <Col style={{"text-align": "right"}}>Processed: {currentTask.imported_cases} of {currentTask.total_cases}</Col>
+                    <Col style={{"textAlign": "right"}}>Processed: {currentTask.imported_cases} of {currentTask.total_cases}</Col>
                 </Row>
                 {progressInstance}
                 {downloadResult}

@@ -1,10 +1,13 @@
 import React from "react";
 import { render } from "react-dom";
+import { createRoot } from 'react-dom/client';
 import App from "./components/App";
 import TechnologyStack from "./components/TechnologyStack";
 
 const appDiv = document.getElementById("app");
-render(<App />, appDiv);
+const appRoot = createRoot(appDiv);
+appRoot.render(<App />);
 
 const techDiv = document.getElementById("divTechnologyStack");
-render(<TechnologyStack />, techDiv);
+const techRoot = createRoot(techDiv);
+techRoot.render(<TechnologyStack />);

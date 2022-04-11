@@ -8,7 +8,6 @@ const FormAttachmentFileInput = (props) => {
         <>
             <Form.Label>File attachments.zip</Form.Label>
             <Form.Control 
-                id="formAttachmentFileInput"
                 type="file"
                 accept=".zip"
                 disabled={
