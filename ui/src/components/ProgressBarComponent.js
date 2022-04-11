@@ -3,7 +3,6 @@ import { ProgressBar } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
-import moment from 'moment';
 
 const humanizeDuration = (duration) => {
     let op = [];

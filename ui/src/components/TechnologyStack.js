@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
 import { Toast } from "react-bootstrap";
-import moment from 'moment';
+var dayjs = require('dayjs');
+var relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(relativeTime);
 
 const TechnologyStack = (props) => {
     const [showA, setShowA] = useState(true);
@@ -14,7 +16,7 @@ const TechnologyStack = (props) => {
         <Toast.Header closeButton={false}>
             <i className="fa fa-comments me-2" aria-hidden="true"></i>
             <strong className="me-auto">Announcement</strong>
-            <small>{moment("20220411", "YYYYMMDD").fromNow()}</small>
+            <small>{dayjs("20220411", "YYYYMMDD").fromNow()}</small>
         </Toast.Header>
         <Toast.Body>Importing is now allowed only for <strong>Siebel CRM</strong> project with custom fields. Test Cases will be created as Regression type.</Toast.Body>
         </Toast>
