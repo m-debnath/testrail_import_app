@@ -71,7 +71,7 @@ def make_api_get_request(uri):
                 print('Pause for %x seconds' % retry_after)
                 sleep(retry_after)
                 too_many_requests = True
-            elif '504' in error_string or '502' in error_string:
+            elif 'HTTP 5' in error_string:
                 print('%s error: Pause for 10 seconds' % error_string)
                 sleep(10)
                 too_many_requests = True
@@ -94,7 +94,7 @@ def make_api_post_request(uri, body):
                 print('Pause for %x seconds' % retry_after)
                 sleep(retry_after)
                 too_many_requests = True
-            elif '504' in error_string or '502' in error_string:
+            elif 'HTTP 5' in error_string:
                 print('%s error: Pause for 10 seconds' % error_string)
                 sleep(10)
                 too_many_requests = True
@@ -450,6 +450,18 @@ def import_task(self, task_id, username, password, auth_header):
                     'custom_steps_separated': []
                 }
                 testrail_case_id = create_test_case(test_case['section_id'], test_case)
+
+            if steps_count == 0:
+                ws.cell(row=i, column=32).value = str(testrail_case_id)
+                ws.cell(row=i, column=33).value = TEST_CASE_URL_PREFIX + str(testrail_case_id)
+                imported_cases += 1
+                current_task.imported_cases = imported_cases
+                current_task.save()
+                requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
+                test_case = None
+                testrail_case_id = None
+                start_step = 1
+                continue
 
             # Other steps
             test_step_id = str(ws.cell(row=i, column=10).value)
