@@ -332,17 +332,6 @@ def import_task(self, task_id, username, password, auth_header):
     requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
 
     start = monotonic_ns()
-    try:
-        unpack_archive(attachment_file, settings.MEDIA_ROOT + '/' + current_task.user + '/' + current_task.session_id)
-    except Exception:
-        end = monotonic_ns()
-        current_task.status_message = "Can't unpack " + attachment_file + "."
-        current_task.error_message = traceback.format_exc()
-        current_task.status = "Failed"
-        current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
-        current_task.save()
-        requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
-        return
 
     # loads the test case ids extracted from qc
     try:
@@ -380,6 +369,28 @@ def import_task(self, task_id, username, password, auth_header):
         current_task.save()
         requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
         return
+    
+    # Validate .. in attachment filename.
+    try:
+        for row in ws.iter_rows(min_row=1, max_row=max_row, min_col=17, max_col=17):
+            for cell in row:
+                if '..' in str(cell.value):
+                    end = monotonic_ns()
+                    current_task.status_message = "Attachment " + str(ws.cell(row=cell.row, column=17).value) + " is not supported. Please remove .. in both attachment file name and test steps excel file."
+                    current_task.status = "Failed"
+                    current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
+                    current_task.save()
+                    requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
+                    return
+    except Exception as e:
+        end = monotonic_ns()
+        current_task.status_message = str(e) + "."
+        current_task.error_message = traceback.format_exc()
+        current_task.status = "Failed"
+        current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
+        current_task.save()
+        requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
+        return
 
     # Update total count excluding processed cases
     if current_task.retry_import:
@@ -393,6 +404,19 @@ def import_task(self, task_id, username, password, auth_header):
         current_task.total_cases = len(list(set(qc_ids) & set(unprocessed_test_case_ids)))
     current_task.save()
     requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
+    
+    # Unzip attachments.zip
+    try:
+        unpack_archive(attachment_file, settings.MEDIA_ROOT + '/' + current_task.user + '/' + current_task.session_id)
+    except Exception:
+        end = monotonic_ns()
+        current_task.status_message = "Can't unpack " + attachment_file + "."
+        current_task.error_message = traceback.format_exc()
+        current_task.status = "Failed"
+        current_task.elapsed_time = timedelta(milliseconds=int((end-start)/1000000))
+        current_task.save()
+        requests.post(f'{hostname}/api/create_event/', json={"user": current_user}, headers={"Authorization": auth_header}, verify=False)
+        return
 
     # starts reading test cases and pushing to Jira
     start_step = 1
