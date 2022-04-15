@@ -178,7 +178,7 @@ def check_and_create_section_hier(parent_section_name, section_name):
     if not top_section_exists:
         all_sections = get_all_sections(PROJECT_ID, SUITE_ID)
         for section in all_sections:
-            if TOP_SECTION == section['name']:
+            if TOP_SECTION == section['name'] and section['parent_id'] == None:
                 top_section_id = section['id']
                 ALL_TESTRAIL_SECTIONS.append({
                     'name': section['name'],
@@ -202,13 +202,13 @@ def check_and_create_section_hier(parent_section_name, section_name):
         parent_section_id = -1
         section_id = -1
         for section in ALL_TESTRAIL_SECTIONS:
-            if parent_section_name == section['name'] and TOP_SECTION == section['name']:
+            if parent_section_name == section['name'] and TOP_SECTION == section['name'] and section['parent_id'] == None:
                 parent_section_id = section['id']
                 break
         if parent_section_id == -1:
             all_sections = get_all_sections(PROJECT_ID, SUITE_ID)
             for section in all_sections:
-                if parent_section_name == section['name'] and TOP_SECTION == section['name']:
+                if parent_section_name == section['name'] and TOP_SECTION == section['name'] and section['parent_id'] == None:
                     parent_section_id = section['id']
                     ALL_TESTRAIL_SECTIONS.append({
                         'name': section['name'],
@@ -223,7 +223,7 @@ def check_and_create_section_hier(parent_section_name, section_name):
                     'id': parent_section_id,
                     'parent_id': None,
                 })
-        
+
         for section in ALL_TESTRAIL_SECTIONS:
             if section_name == section['name'] and parent_section_id == section['parent_id']:
                 section_id = section['id']
