@@ -1,31 +1,45 @@
 version: '3.8'
 services:
-    ui:
+    testrail-app-service:
         build:
             context: .
             dockerfile: Dockerfile
-        restart: always
         ports:
-            - 80:8000
+            - 9090:8000
+        restart: always
         depends_on:
-            - "db"
+            - "testrail-db-service"
         volumes:
             - .:/app
         environment:
-            - DEBUG=1
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-        command: sh -c "celery -A testrail_import_app worker -l info --detach && ./wait-for db:3306 -- python manage.py runserver 0.0.0.0:8000"
-    redis:
+            - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+            - MYSQL_DB_HOST=${MYSQL_DB_HOST}
+            - MYSQL_DB_PORT=${MYSQL_DB_PORT}
+            - MYSQL_DB_NAME=${MYSQL_DB_NAME}
+            - MYSQL_DJANGO_USER=${MYSQL_DJANGO_USER}
+            - CHANNEL_REDIS_HOST=${CHANNEL_REDIS_HOST}
+            - CHANNEL_REDIS_PORT=${CHANNEL_REDIS_PORT}
+            - CELERY_REDIS_HOST=${CELERY_REDIS_HOST}
+            - CELERY_REDIS_PORT=${CELERY_REDIS_PORT}
+            - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+            - CURRENT_HOST=${CURRENT_HOST}
+            - TESTRAIL_URL=${TESTRAIL_URL}
+            - SESSION_COOKIE_SECURE=${SESSION_COOKIE_SECURE}
+            - CSRF_COOKIE_SECURE=${CSRF_COOKIE_SECURE}
+            - DEBUG=${DEBUG}
+        command: sh -c "celery -A testrail_import_app worker -l info --detach && ./wait-for testrail-db-service:3306 -- python manage.py runserver 0.0.0.0:8000"
+    testrail-channel-redis-service:
         image: 'redis:alpine'
         restart: always
-    celery-redis:
+    testrail-celery-redis-service:
         image: 'redis:alpine'
         restart: always
-    db:
+    testrail-db-service:
         image: mysql/mysql-server
         restart: always
         environment:
-            MYSQL_DATABASE: testrail_import_db
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DB_NAME}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         volumes:
             - .dbdata:/var/lib/mysql

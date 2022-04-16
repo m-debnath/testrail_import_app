@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: testrail-app-volume
+  labels:
+    type: local
+spec:
+  storageClassName: testrail-app
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/run/desktop/mnt/host/c/Users/mukul/Documents/coding/python_workspace/testrail_import/k8-pv-volumes/testrail-app-volume"

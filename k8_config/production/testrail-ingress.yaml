@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: testrail-ingress
+  namespace: testrail-import-production
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 2g
+
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: testrail-proxy-service
+      port:
+        number: 8080
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: testrail-proxy-service
+            port:
+              number: 8080

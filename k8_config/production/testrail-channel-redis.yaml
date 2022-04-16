@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testrail-channel-redis-deployment
+  labels:
+    app: testrail-channel-redis
+  namespace: testrail-import-production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testrail-channel-redis
+  template:
+    metadata:
+      labels:
+        app: testrail-channel-redis
+      namespace: testrail-import-production
+    spec:
+      containers:
+      - name: testrail-channel-redis
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testrail-channel-redis-service
+  namespace: testrail-import-production
+spec:
+  selector:
+    app: testrail-channel-redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379

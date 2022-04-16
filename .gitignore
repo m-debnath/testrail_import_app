@@ -297,3 +297,6 @@ dist
 
 # Custom
 .dbdata/
+
+# K8 Secrets
+*testrail-import-secret*

@@ -21,4 +21,4 @@ RUN chmod 755 /app/wait-for
 RUN chmod -R 755 /app/scripts
 USER user
 
-CMD ["./wait-for", "db:3306", "--", "entrypoint.sh"]
+CMD ["./wait-for", "testrail-db-service:3306", "--", "entrypoint.sh"]

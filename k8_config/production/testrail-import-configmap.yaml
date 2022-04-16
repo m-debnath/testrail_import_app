@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: testrail-import-configmap
+  namespace: testrail-import-production
+data: 
+  MYSQL_DB_HOST: testrail-db-service
+  MYSQL_DB_PORT: "3306"
+  MYSQL_DB_NAME: testrail_import_db
+  MYSQL_DJANGO_USER: tradmin
+  CHANNEL_REDIS_HOST: testrail-channel-redis-service
+  CHANNEL_REDIS_PORT: "6379"
+  CELERY_REDIS_HOST: testrail-celery-redis-service
+  CELERY_REDIS_PORT: "6379"
+  ALLOWED_HOSTS: "https://testrailimport.hobbycodes.com,localhost,127.0.0.1,foo.bar.com"
+  CURRENT_HOST: "http://localhost:8000"
+  TESTRAIL_URL: "https://tele2se.testrail.net/"
+  DEBUG: "0"
+  SESSION_COOKIE_SECURE: "False"
+  CSRF_COOKIE_SECURE: "False"

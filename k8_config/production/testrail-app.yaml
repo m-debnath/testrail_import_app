@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testrail-app-deployment
+  labels:
+    app: testrail-app
+  namespace: testrail-import-production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testrail-app
+  template:
+    metadata:
+      labels:
+        app: testrail-app
+      namespace: testrail-import-production
+    spec:
+      volumes:
+        - name: testrail-app-storage
+          persistentVolumeClaim:
+            claimName: testrail-app-volume-claim
+      containers:
+      - name: testrail-app
+        image: mukuldebnath/testrail-import-app
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+          - mountPath: "/vol/web"
+            name: testrail-app-storage
+        env:
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: DEBUG
+        - name: SESSION_COOKIE_SECURE
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: SESSION_COOKIE_SECURE
+        - name: CSRF_COOKIE_SECURE
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: CSRF_COOKIE_SECURE
+        - name: ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: ALLOWED_HOSTS
+        - name: CHANNEL_REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: CHANNEL_REDIS_HOST
+        - name: CHANNEL_REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: CHANNEL_REDIS_PORT
+        - name: CELERY_REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: CELERY_REDIS_HOST
+        - name: CELERY_REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: CELERY_REDIS_PORT
+        - name: MYSQL_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: MYSQL_DB_NAME
+        - name: MYSQL_DJANGO_USER
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: MYSQL_DJANGO_USER
+        - name: MYSQL_DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: MYSQL_DB_HOST
+        - name: MYSQL_DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: MYSQL_DB_PORT
+        - name: DJANGO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: testrail-import-secret
+              key: DJANGO_SECRET_KEY
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: testrail-import-secret
+              key: MYSQL_ROOT_PASSWORD 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testrail-app-service
+  namespace: testrail-import-production
+spec:
+  selector:
+    app: testrail-app
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000

@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/y
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'changeme')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'changeme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG', 0)))
@@ -40,7 +40,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("redis", 6379)],
+            "hosts": [(os.environ.get('CHANNEL_REDIS_HOST'), os.environ.get('CHANNEL_REDIS_PORT'))],
         },
     },
 }
@@ -109,11 +109,11 @@ ASGI_APPLICATION = 'testrail_import_app.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testrail_import_db',
-        'USER': 'tradmin',
-        'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD', 'changeme'),
-        'HOST': 'db',
-        'PORT': '3306',
+        'NAME': os.environ.get('MYSQL_DB_NAME'),
+        'USER': os.environ.get('MYSQL_DJANGO_USER'),
+        'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD'),
+        'HOST': os.environ.get('MYSQL_DB_HOST'),
+        'PORT': os.environ.get('MYSQL_DB_PORT'),
     }
 }
 
@@ -168,8 +168,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Security
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'True') == "True"
+CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'True') == "True"
 
 # Timezone
 USE_TZ = True
@@ -179,7 +179,7 @@ TIME_ZONE = 'Asia/Kolkata'
 SESSION_ID_MAX_LENGTH = 8
 
 # Celery
-CELERY_BROKER_URL = 'redis://celery-redis:6379'
-CELERY_RESULT_BACKEND = 'redis://celery-redis:6379'
+CELERY_BROKER_URL = 'redis://' + os.environ.get('CELERY_REDIS_HOST') + ':' + os.environ.get('CELERY_REDIS_PORT')
+CELERY_RESULT_BACKEND = 'redis://' + os.environ.get('CELERY_REDIS_HOST') + ':' + os.environ.get('CELERY_REDIS_PORT')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'

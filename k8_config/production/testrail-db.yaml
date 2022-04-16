@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testrail-db-deployment
+  labels:
+    app: testrail-db
+  namespace: testrail-import-production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testrail-db
+  template:
+    metadata:
+      labels:
+        app: testrail-db
+      namespace: testrail-import-production
+    spec:
+      volumes:
+        - name: testrail-db-storage
+          persistentVolumeClaim:
+            claimName: testrail-db-volume-claim
+      containers:
+      - name: testrail-db
+        image: mysql/mysql-server
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+          - mountPath: "/var/lib/mysql"
+            name: testrail-db-storage
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: testrail-import-configmap
+              key: MYSQL_DB_NAME
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: testrail-import-secret
+              key: MYSQL_ROOT_PASSWORD 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testrail-db-service
+  namespace: testrail-import-production
+spec:
+  selector:
+    app: testrail-db
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306

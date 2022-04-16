@@ -1,0 +1,13 @@
+.dbdata
+.github
+.vscode
+k8_config
+proxy
+.env
+.gitignore
+docker-compose-deploy.yml
+docker-compose.yml
+Dockerfile
+Dockerfile-deploy
+**/__pycache__
+**/node_modules

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: testrail-db-volume-claim
+  namespace: testrail-import-production
+spec:
+  storageClassName: testrail-db
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

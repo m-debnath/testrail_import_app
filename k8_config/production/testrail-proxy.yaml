@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testrail-proxy-deployment
+  labels:
+    app: testrail-proxy
+  namespace: testrail-import-production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testrail-proxy
+  template:
+    metadata:
+      labels:
+        app: testrail-proxy
+      namespace: testrail-import-production
+    spec:
+      volumes:
+        - name: testrail-proxy-storage
+          persistentVolumeClaim:
+            claimName: testrail-app-volume-claim
+      containers:
+      - name: testrail-proxy
+        image: mukuldebnath/testrail-import-proxy
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+          - mountPath: "/vol/static"
+            name: testrail-proxy-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testrail-proxy-service
+  namespace: testrail-import-production
+spec:
+  selector:
+    app: testrail-proxy
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 30000

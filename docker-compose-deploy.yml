@@ -1,21 +1,32 @@
 version: '3.8'
 services:
-    ui:
+    testrail-app-service:
         build:
             context: .
             dockerfile: Dockerfile-deploy
         restart: always
         depends_on:
-            - "db"
+            - "testrail-db-service"
         volumes:
             - static_data:/vol/web
         environment:
-            - SECRET_KEY=${DJANGO_SECRET_KEY}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+            - MYSQL_DB_HOST=${MYSQL_DB_HOST}
+            - MYSQL_DB_PORT=${MYSQL_DB_PORT}
+            - MYSQL_DB_NAME=${MYSQL_DB_NAME}
+            - MYSQL_DJANGO_USER=${MYSQL_DJANGO_USER}
+            - CHANNEL_REDIS_HOST=${CHANNEL_REDIS_HOST}
+            - CHANNEL_REDIS_PORT=${CHANNEL_REDIS_PORT}
+            - CELERY_REDIS_HOST=${CELERY_REDIS_HOST}
+            - CELERY_REDIS_PORT=${CELERY_REDIS_PORT}
             - ALLOWED_HOSTS=${ALLOWED_HOSTS}
             - CURRENT_HOST=${CURRENT_HOST}
             - TESTRAIL_URL=${TESTRAIL_URL}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    proxy:
+            - SESSION_COOKIE_SECURE=${SESSION_COOKIE_SECURE}
+            - CSRF_COOKIE_SECURE=${CSRF_COOKIE_SECURE}
+            - DEBUG=${DEBUG}
+    testrail-proxy-service:
         build:
             context: ./proxy
         restart: always
@@ -24,19 +35,19 @@ services:
         ports:
             - "8080:8080"
         depends_on:
-            - ui
-    redis:
+            - testrail-app-service
+    testrail-channel-redis-service:
         image: 'redis:alpine'
         restart: always
-    celery-redis:
+    testrail-celery-redis-service:
         image: 'redis:alpine'
         restart: always
-    db:
+    testrail-db-service:
         image: mysql/mysql-server
         restart: always
         environment:
-            MYSQL_DATABASE: testrail_import_db
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DB_NAME}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         volumes:
             - .dbdata:/var/lib/mysql
 
