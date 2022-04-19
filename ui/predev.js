@@ -20,6 +20,7 @@ templateFiles.forEach((templateFile) => {
         console.log(templateFile + ' injected with main.js file names.');
     } catch (err) {
         console.error(err);
+        process.exit(1);
     }
 });
 console.log('\n');

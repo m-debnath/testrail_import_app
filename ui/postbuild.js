@@ -9,6 +9,7 @@ try {
     buildHtml = fs.readFileSync(buildHtmlTarget, 'utf8');
 } catch (err) {
     console.error(err);
+    process.exit(1);
 }
 
 // Manipulate script tasg into django format
@@ -40,6 +41,7 @@ templateFiles.forEach((templateFile) => {
         console.log(templateFile + ' injected with new JS file names.');
     } catch (err) {
         console.error(err);
+        process.exit(1);
     }
 });
 console.log('\n');
@@ -52,7 +54,6 @@ let keepModules = [
     'jquery.js'
 ];
 let generatedJsFileNames = [];
-let licenseFileNames = [];
 generatedJsFileNames = buildHtml.match(fileNameRegex);
 generatedJsFileNames = generatedJsFileNames.map(filename => filename.replaceAll(`"`, ``));
 keepModules = keepModules.concat(generatedJsFileNames);
