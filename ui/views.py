@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from testrail import *
-from .forms import UserLoginForm
 from django.templatetags.static import static
 from .models import Task
 from django.db.models import Q
 from api.serializers import TaskSerializer
+from django.contrib.auth.forms import AuthenticationForm
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
@@ -30,7 +30,7 @@ def home(request):
 
 def login(request):
     if request.method == 'POST':
-        form = UserLoginForm(data=request.POST)
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             request.session['username'] = form.cleaned_data.get('username')
             request.session['password'] = form.cleaned_data.get('password')
@@ -40,7 +40,7 @@ def login(request):
             username = request.session['username']
             return redirect('home')
         except KeyError:
-            form = UserLoginForm()
+            form = AuthenticationForm()
     return render(request, 'ui/login.html', {
         'form': form,
         'session_data': {},

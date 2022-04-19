@@ -183,3 +183,9 @@ CELERY_BROKER_URL = 'redis://' + os.environ.get('CELERY_REDIS_HOST') + ':' + os.
 CELERY_RESULT_BACKEND = 'redis://' + os.environ.get('CELERY_REDIS_HOST') + ':' + os.environ.get('CELERY_REDIS_PORT')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+
+# Authentication
+AUTHENTICATION_BACKENDS = [
+    'testrail_import_app.backends.TestrailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
