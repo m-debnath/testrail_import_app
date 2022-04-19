@@ -47,8 +47,6 @@ templateFiles.forEach((templateFile) => {
 console.log('\n');
 
 // Delete old build files
-const licenseNameFormat = `.LICENSE.txt`;
-const vendorsNameFormat = `vendors`;
 const fileNameRegex = /"\S*.js?"/g;
 let keepModules = [
     'jquery.js'
