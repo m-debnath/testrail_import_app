@@ -1,5 +1,4 @@
 import logging
-from django.http import HttpResponse
 import requests
 import json
 from ui.models import Task

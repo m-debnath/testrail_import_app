@@ -7,10 +7,6 @@ from django.db.models import Q
 from api.serializers import TaskSerializer
 from django.contrib.auth.forms import AuthenticationForm
 
-MESSAGE_TAGS = {
-    messages.ERROR: 'danger',
-}
-
 def home(request):
     try:
         username = request.session['username']
@@ -54,5 +50,5 @@ def logout(request):
         del request.session['password']
         messages.error(request, 'You\'re now logged out.')
     except KeyError:
-        messages.warning(request, 'Please login first.')
+        pass
     return redirect('login')
