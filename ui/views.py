@@ -6,11 +6,13 @@ from .models import Task
 from django.db.models import Q
 from api.serializers import TaskSerializer
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 def home(request):
     try:
         username = request.session['username']
         password = request.session['password']
+        _ = User.objects.get(username=username)
         latest_task = Task.objects.filter(Q(user=username)).first()
         session_data = json.dumps({
             'username': username,
@@ -22,6 +24,8 @@ def home(request):
             'STATIC_URL': static(''),
         })
     except KeyError:
+        return redirect('login')
+    except User.DoesNotExist:
         return redirect('login')
 
 def login(request):
