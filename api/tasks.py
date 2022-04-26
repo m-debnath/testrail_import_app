@@ -436,7 +436,7 @@ def import_task(self, task_id, username, password, auth_header):
                 continue
 
             # First Step
-            if start_step == 1:
+            if start_step == 1 and testrail_case_id is None:
                 test_case_parent_dir = str(ws.cell(row=i, column=1).value)
                 test_case_dir = str(ws.cell(row=i, column=2).value)
                 test_case_title = str(ws.cell(row=i, column=4).value).replace('_x000D_', '').replace('\n', ' ') if not ws.cell(row=i, column=4).value is None else ''
