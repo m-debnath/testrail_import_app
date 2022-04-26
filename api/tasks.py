@@ -70,11 +70,11 @@ def make_api_get_request(uri):
                 retry_after = int(retry_after)
                 print('Pause for %x seconds' % retry_after)
                 sleep(retry_after)
-                too_many_requests = True
+                # too_many_requests = True
             elif 'HTTP 5' in error_string:
                 print('%s error: Pause for 10 seconds' % error_string)
                 sleep(10)
-                too_many_requests = True
+                # too_many_requests = True
             else:
                 raise Exception('Unexpected API Error: %s' % error_string)
 
@@ -93,11 +93,11 @@ def make_api_post_request(uri, body):
                 retry_after = int(retry_after)
                 print('Pause for %x seconds' % retry_after)
                 sleep(retry_after)
-                too_many_requests = True
+                # too_many_requests = True
             elif 'HTTP 5' in error_string:
                 print('%s error: Pause for 10 seconds' % error_string)
                 sleep(10)
-                too_many_requests = True
+                # too_many_requests = True
             else:
                 raise Exception('Unexpected API Error: %s' % error_string)
 
